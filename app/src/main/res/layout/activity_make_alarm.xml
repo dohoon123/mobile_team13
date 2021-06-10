@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".alarm"
+    android:orientation="vertical"
+    tools:deviceIds="wear">
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#403F3F"
+        android:backgroundTint="#403F3F"
+        android:padding="10dp"
+        android:text="  알람 리스트 "
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:text="알람 새로 생성하는 화면입니다. 이 밑으로 화면 구성할거임"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="100dp"
+        android:backgroundTint="#403F3F"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:layout_height="50dp"
+        android:text="확인"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
