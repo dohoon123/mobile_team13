@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.round.databinding.RowBinding
 
-
+//db
 class MyAdapter(val items:ArrayList<memoData>): RecyclerView.Adapter<MyAdapter.ViewHolder>(){
 
     interface OnItemClickListener{
@@ -22,6 +22,12 @@ class MyAdapter(val items:ArrayList<memoData>): RecyclerView.Adapter<MyAdapter.V
                 itemClickListener?.OnItemClick(this,it,items[adapterPosition],adapterPosition)
             }
         }
+    }
+    fun removeItem(pos:Int): String{
+        var deletedID= items[pos].id.toString()
+        items.removeAt(pos)
+        notifyItemRemoved(pos)
+        return deletedID
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
