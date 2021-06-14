@@ -2,6 +2,7 @@ package com.example.round
 
 
 import android.R
+import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.round.databinding.FragmentTodayBinding
 import android.graphics.Color
 import android.os.Handler
+import android.os.Message
 import android.view.MotionEvent
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -23,6 +25,10 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 class TodayFragment : Fragment() {
     var binding: FragmentTodayBinding?=null
@@ -31,8 +37,8 @@ class TodayFragment : Fragment() {
     lateinit var scheduleArray:ArrayList<scheduleData>
     lateinit var rDBHelper: rDBHelper
     lateinit var sDBHelper: sDBHelper
-
-
+//    val clock = binding!!.clockView //시계로 쓸 텍스트뷰
+//    var mHandler: Handler? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +49,7 @@ class TodayFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        //initClock()
         initSpinner()   //스피너 만들기
         //원형 스케줄러
         initCircular(null)
@@ -58,6 +64,26 @@ class TodayFragment : Fragment() {
             }
         }
     }
+//    //시계
+//    private fun initClock() {
+//        @SuppressLint("HandlerLeak")
+//        mHandler = object : Handler() {
+//            override fun handleMessage(msg: Message) {
+//                val cal = Calendar.getInstance()
+//
+//                val sdf = SimpleDateFormat("HH:mm:ss")
+//                val strTime = sdf.format(cal.time)
+//
+//                clock?.setText(strTime)
+//            }
+//        }
+//        thread(start = true) {
+//            while (true) {
+//                Thread.sleep(1000)
+//                mHandler?.sendEmptyMessage(0)
+//            }
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

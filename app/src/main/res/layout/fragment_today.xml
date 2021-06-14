@@ -8,6 +8,23 @@
     tools:context=".TodayFragment">
 
     <!-- android:layout_height=414dp -->
+    <DigitalClock
+        android:id="@+id/digitalCalender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/date/mmddyy"
+        android:padding="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textStyle="bold" />
+    <DigitalClock
+        android:id="@+id/digitalClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/date/hhmm"
+        android:padding="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
         android:layout_width="305dp"
