@@ -40,8 +40,24 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return flag
     }
 
+    //루틴의 이름을 받아서 루틴 아이디를 반환해주는 함수. 일치하는 루틴 없으면 -1 반환
+    fun getrId(rname: String) : Int {
+        val strsql="select * from $TABLE_NAME where $RNAME = $rname;"
+        val db = readableDatabase
+        var rId:Int
+        var cursorDriver=db.rawQuery(strsql, null)
+        cursorDriver.moveToFirst()
+        //Name도 후보키로 중복된 데이터가 없어야할것같아요
+        if(cursorDriver.columnCount==1) {
+            rId = cursorDriver.getInt(0)
+        } else {
+            rId = -1
+        }
+        cursorDriver.close()
+        db.close()
+        return rId
 
-
+    }
 
     fun selectAll():ArrayList<routineData>{
         //routine데이터 전부 다 가져올거임 Array로 리턴
