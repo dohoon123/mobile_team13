@@ -59,6 +59,8 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     }
 
+
+
     fun selectAll():ArrayList<routineData>{
         //routine데이터 전부 다 가져올거임 Array로 리턴
         val strsql="select * from $TABLE_NAME;"
@@ -72,10 +74,10 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
         var tempString=""
         //맨 위에 그 타이틀 읽어와서 붙여준 거임
-        var routineid=cursorDriver.getString(0)
+/*        var routineid=cursorDriver.getString(0)
         var routineName=cursorDriver.getString(1)
         var routineTerm=cursorDriver.getString(2)
-        routineArray.add(routineData(routineid.toInt(),routineName,routineTerm.toInt()))
+        routineArray.add(routineData(routineid.toInt(),routineName,routineTerm.toInt()))*/
         //데이터를 읽어와서 넣어줄 거임
         //(var routineID: Int, var routineName: String, var routineTerm: Int
         do{
@@ -86,12 +88,13 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                 var routineName=cursorDriver.getString(1)
                 var routineTerm=cursorDriver.getString(2)
                 routineArray.add(routineData(routineid.toInt(),routineName,routineTerm.toInt()))
-              }
+            }
         }while(cursorDriver.moveToNext())
 
         cursorDriver.close()
         db.close()
         return routineArray
     }
+
 
 }

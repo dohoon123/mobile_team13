@@ -92,14 +92,19 @@ class TodayFragment : Fragment() {
 
     private fun initSpinner() {     //DB의 루틴의 이름들을 모두 가져와서 스피너의 각 항목에 넣어줌
         //spinner 초기화
-        lateinit var rNameList : ArrayList<String> //스피너의 각 아이템이 될 루틴의 이름들
+        var rNameList : ArrayList<String> = ArrayList<String>() //스피너의 각 아이템이 될 루틴의 이름들
 
         var context=this.context
         this.rDBHelper= rDBHelper(context!!)
         this.routineDataArray=rDBHelper.selectAll()     //DB로 부터 존재하는 루틴 다 가져오기
-        for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
-            rNameList.add(routine.routineName)
+        if(this.routineDataArray.isNullOrEmpty()) {
+            //데베에 루틴 없는 경우
+        } else {
+            for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
+                rNameList.add(routine.routineName)
+            }
         }
+
         //layout에 어레이의 데이터를 매핑 시켜서 보여주는 어댑터
         val adapter = ArrayAdapter<String>(context!!, R.layout.simple_spinner_dropdown_item, rNameList)
         adapter.insert("선택 안함", 0)    //디폴트 (선택 안됨을 의미)

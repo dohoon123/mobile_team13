@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             tab.text = textarr[position]
             tab.setIcon(iconarr[position])
         }.attach()
+        binding.viewPager.setCurrentItem(1) //오늘의 시간표 메인으로 설정
     }
 
 }
