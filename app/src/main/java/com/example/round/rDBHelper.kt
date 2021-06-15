@@ -59,8 +59,6 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     }
 
-
-
     fun selectAll():ArrayList<routineData>{
         //routine데이터 전부 다 가져올거임 Array로 리턴
         val strsql="select * from $TABLE_NAME;"

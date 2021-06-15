@@ -17,7 +17,6 @@ class MemoFragment : Fragment() {
     lateinit var adapter: MyAdapter       //단순한 단어 넣어주기
     lateinit var MemoDBHelper: MemoDBHelper
 
-
     var binding: FragmentMemoBinding?=null
     var tempList=ArrayList<memoData>()
 
@@ -75,7 +74,6 @@ class MemoFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
