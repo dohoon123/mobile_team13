@@ -49,8 +49,8 @@ class TimetableFragment : Fragment() {
     fun initHelper(){
         //여기서 데이터 읽어올 거임
         var context=this.context
-        this.rDBHelper= rDBHelper(context!!)
-        this.sDBHelper=sDBHelper(context!!)
+        this.rDBHelper= rDBHelper(requireContext())
+        this.sDBHelper=sDBHelper(requireContext())
         //데이터 넣어주고 여기서 있는거 넣어줄거임...
         this.routineArray=rDBHelper.selectAll()
         this.scheduleArray=sDBHelper.selectAll()
@@ -88,8 +88,6 @@ class TimetableFragment : Fragment() {
                 startActivity(intent)
             }
         }
-
-
 
 
     }

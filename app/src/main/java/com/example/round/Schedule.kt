@@ -33,7 +33,6 @@ class Schedule : AppCompatActivity() {
         DBHelper = sDBHelper(this)
         val routineID: Int = intent.getStringExtra("RID").toString().toInt()
 
-
         binding.apply{
             insertBtn.setOnClickListener{
                 val name = sNameEdit.text.toString()
