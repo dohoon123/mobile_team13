@@ -54,7 +54,6 @@ class TodayFragment : Fragment() {
         //원형 스케줄러
         initCircular(null)
 
-
         //메모 추가
         MemoDBHelper = MemoDBHelper(getActivity())
         memoInsert()
@@ -107,12 +106,12 @@ class TodayFragment : Fragment() {
 
         //layout에 어레이의 데이터를 매핑 시켜서 보여주는 어댑터
         val adapter = ArrayAdapter<String>(requireContext(), R.layout.simple_spinner_dropdown_item, rNameList)
-
+/*
         adapter.insert("선택 안함", 0)    //디폴트 (선택 안됨을 의미)
         for(rName in rNameList) {
             adapter.add(rName)
         }
-
+*/
         binding!!.apply {
             spinner.adapter = adapter
             spinner.setSelection(0) //디폴트(아직 루틴 선택 안한 거)로 처음에 설정

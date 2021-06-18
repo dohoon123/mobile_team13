@@ -32,15 +32,20 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         onCreate(db)
     }
 
-    fun insertSchedule(schedule:scheduleData):Boolean{
-        val values = ContentValues()
-        values.put(RID, schedule.routineID)
-        values.put(SNAME, schedule.scheduleName)
-        values.put(SSTART, schedule.startTime)
-        values.put(SEND, schedule.endTime)
-        val db = writableDatabase
-        val flag = db.insert(TABLE_NAME, null, values)>0
-        db.close()
+    fun insertSchedule(schedule:scheduleData): Boolean{
+        var checkFlag:Boolean = scheduleCheck(schedule)
+        var flag = false
+        if (checkFlag==false) {
+            val values = ContentValues()
+            values.put(RID, schedule.routineID)
+            values.put(SNAME, schedule.scheduleName)
+            values.put(SSTART, schedule.startTime)
+            values.put(SEND, schedule.endTime)
+            val db = writableDatabase
+            flag = db.insert(TABLE_NAME, null, values) > 0
+            db.close()
+            return flag
+        }
         return flag
     }
 
@@ -115,6 +120,64 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         cursorDriver.close()
         db.close()
         return scheduleArray
+    }
+
+    fun selectAllSbyR(rid: Int):ArrayList<scheduleData>{
+        //routine데이터 전부 다 가져올거임 Array로 리턴
+        val strsql="select * from ${sDBHelper.TABLE_NAME} where $RID = $rid;"
+        val db=readableDatabase
+        var scheduleArray = ArrayList<scheduleData>()//전체 데이터
+        var cursorDriver=db.rawQuery(strsql,null)
+
+        cursorDriver.moveToFirst()
+
+        //var routineID: Int, var scheduleID: Int, var scheduleName: String, var startTime: Int, var endTime: Int
+        do{
+            if(cursorDriver.count==0){return scheduleArray}
+            else{
+                var routineid=cursorDriver.getString(0)
+                var scheduleid=cursorDriver.getString(1)
+                var scheduleName=cursorDriver.getString(2)
+                var startTime=cursorDriver.getString(3)
+                var endTime=cursorDriver.getString(4)
+                scheduleArray.add(scheduleData(routineid.toInt(),scheduleid.toInt(),scheduleName,startTime.toInt(),endTime.toInt()))
+            }
+        }while(cursorDriver.moveToNext())
+
+        cursorDriver.close()
+        db.close()
+        return scheduleArray
+    }
+
+    fun scheduleCheck(newSchedule: scheduleData):Boolean{
+        var flag = false
+        val oldSchedules = selectAllSbyR(newSchedule.routineID)
+
+        if (newSchedule.startTime >= newSchedule.endTime){//시작 시간이 종료시간 보다 앞서야함
+            return true
+        }
+        //기존 스케줄과 겹치는지
+        for(i in 0..(oldSchedules.size-1)){
+            var row = oldSchedules[i]
+            flag = row.startTime < newSchedule.endTime && newSchedule.startTime < row.endTime
+            if (flag == true)
+                return flag
+        }
+
+        //여기서부터 24시간 넘기는 지
+        var totalTime = 0
+        val newScheduleTime = newSchedule.endTime - newSchedule.startTime
+        for(i in 0..(oldSchedules.size-1)){
+            totalTime = totalTime + (oldSchedules[i].endTime - oldSchedules[i].startTime)
+        }
+
+        //기존 시간 + 추가하려는 시간
+        flag = (totalTime + newScheduleTime > 1440)
+        //flag == true 가 스케줄 추가하면 안 되는 거임
+
+        //24시간 넘는지 계산
+        return flag
+
     }
 
 }
