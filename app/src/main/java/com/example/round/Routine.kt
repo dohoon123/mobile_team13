@@ -30,8 +30,7 @@ class Routine : AppCompatActivity() {
                     //Toast.makeText(this@routineActivity, "Data INSERT SUCCESS", Toast.LENGTH_SHORT).show()
                     //새로운 루틴 추가 -> 스케줄 추가 화면.
                     val routineID = DBHelper.getLatestrID()//방금 추가한 rID
-                    val nextIntent = Intent(this@Routine, Schedule::class.java)
-                    nextIntent.putExtra("RID", routineID.toString())
+                    val nextIntent = Intent(this@Routine, MainActivity::class.java)
                     startActivity(nextIntent)
                 }else{
                     Toast.makeText(this@Routine, "Data INSERT FAILED", Toast.LENGTH_SHORT).show()

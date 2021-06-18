@@ -110,4 +110,21 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return routineArray
     }
 
+
+    fun deleteRoutine(routine:timetableData):Boolean{
+        val strsql="select * from $TABLE_NAME where $RID='${routine.routineID}';"
+        val db=writableDatabase
+        val cursor=db.rawQuery(strsql,null)
+        val flag=cursor.count!=0
+        if(flag){
+            cursor.moveToFirst()
+            db.delete(TABLE_NAME,"$RID=?", arrayOf(routine.routineID.toString()))
+        }
+        cursor.close()
+        db.close()
+        return flag
+    }
+
+
+
 }
