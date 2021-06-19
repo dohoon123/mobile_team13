@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/backBtn"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
         android:layout_width="100dp"
         android:layout_height="40dp"

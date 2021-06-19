@@ -87,7 +87,7 @@
         android:layout_marginEnd="86dp"
 
         android:text="삭제"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
         app:layout_constraintBaseline_toBaselineOf="@+id/insertBtn"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -99,7 +99,7 @@
         android:layout_marginStart="88dp"
         android:layout_marginBottom="104dp"
         android:text="확인"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
 
         app:layout_constraintBottom_toBottomOf="parent"

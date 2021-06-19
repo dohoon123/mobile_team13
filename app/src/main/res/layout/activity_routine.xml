@@ -13,7 +13,7 @@
         android:layout_marginTop="188dp"
         android:layout_marginBottom="189dp"
         android:text="추가"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

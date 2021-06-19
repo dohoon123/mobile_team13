@@ -43,7 +43,7 @@
         android:id="@+id/makeAlarm"
         android:layout_width="100dp"
         android:padding="10dp"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
         android:layout_height="50dp"
         android:text="알람 추가"
@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/home"
         android:layout_width="100dp"
-        android:backgroundTint="@color/pink_deep"
+        android:backgroundTint="@color/pink_dark"
         android:textColor="@color/pink_bright"
         android:padding="10dp"
         android:layout_height="50dp"
