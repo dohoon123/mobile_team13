@@ -19,21 +19,56 @@
         android:textStyle="bold"
         android:text="시간표 리스트" />
 
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="200dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
     <Button
         android:id="@+id/add"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:backgroundTint="#403F3F"
         android:padding="10dp"
         android:textColor="#FFFFFF"
         android:layout_height="50dp"
-        android:text="추가"
+        android:text="영구루틴 추가"
         android:gravity="center"
+        android:layout_marginRight="10dp"
         android:layout_gravity="center_horizontal"/>
+        <Button
+            android:id="@+id/tempAdd"
+            android:layout_width="wrap_content"
+            android:backgroundTint="#403F3F"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:layout_height="50dp"
+            android:text="일회성루틴 추가"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_horizontal"/>
 
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:backgroundTint="#403F3F"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:layout_height="50dp"
+            android:text="초기화"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
 
 </LinearLayout>

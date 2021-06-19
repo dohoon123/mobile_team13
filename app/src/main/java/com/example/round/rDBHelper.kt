@@ -198,28 +198,5 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return temp
     }
 
-    fun calculateScore(routineId: Int): Float{
-        var result:Float
-        var sDBHelper = sDBHelper(context)
-
-        var schedules: ArrayList<scheduleData> = sDBHelper.selectAllSbyR(routineId)
-
-        //한 루틴에 대해 전체 스케줄 갯수
-        var totalNum: Float = schedules.size.toFloat()
-        if (totalNum <= 0)
-            return -1f
-
-        val strsql = """select $ALARM from $TABLE_NAME where $RID = $routineId"""
-        val db= readableDatabase
-        var cursorDriver=db.rawQuery(strsql,null)
-        cursorDriver.moveToFirst()
-        if (cursorDriver.columnCount <= 0)
-            return -1f
-        else{
-            var sum = cursorDriver.getString(0).toFloat()
-            result = sum*5 / totalNum
-        }
-        return result
-    }
 
 }

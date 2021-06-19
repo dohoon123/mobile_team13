@@ -8,6 +8,15 @@
     tools:context=".TodayFragment">
 
     <!-- android:layout_height=414dp -->
+    <TextView
+        android:id="@+id/noRoutine"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:gravity="center"
+        android:text="저장된 루틴이 없습니다. \n 루틴을 만들어주세요"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
     <DigitalClock
         android:id="@+id/digitalClock"
         android:layout_width="match_parent"

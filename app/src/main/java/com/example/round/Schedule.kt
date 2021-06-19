@@ -20,12 +20,7 @@ class Schedule : AppCompatActivity() {
 
     fun clearEditText(){
         binding.apply {
-            sIDEdit.text.clear()
             sNameEdit.text.clear()
-            startHourEdit.text.clear()
-            startMinuteEdit.text.clear()
-            endHourEdit.text.clear()
-            endMinuteEdit.text.clear()
         }
     }
 
@@ -36,8 +31,8 @@ class Schedule : AppCompatActivity() {
         binding.apply{
             insertBtn.setOnClickListener{
                 val name = sNameEdit.text.toString()
-                val start = (startHourEdit.text.toString().toInt())*60 - startMinuteEdit.text.toString().toInt()//
-                val end = (endHourEdit.text.toString().toInt())*60 - endMinuteEdit.text.toString().toInt()//
+                val start = startTime.hour*60 + startTime.minute
+                val end = endTime.hour*60 + endTime.minute
                 val schedule = scheduleData(routineID, 0, name, start, end)
                 val result = DBHelper.insertSchedule(schedule)
                 if (result){
@@ -46,9 +41,6 @@ class Schedule : AppCompatActivity() {
                     Toast.makeText(this@Schedule, "Failed", Toast.LENGTH_SHORT).show()
                 }
                 clearEditText()
-
-                val nextIntent = Intent(this@Schedule, TimetableFragment::class.java)
-                startActivity(nextIntent)
             }
         }
     }
