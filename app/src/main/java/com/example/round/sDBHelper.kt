@@ -204,4 +204,51 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     }
 
+
+    fun selectAll_ByRid(routineId: Int):ArrayList<scheduleData> {
+        //routine데이터 전부 다 가져올거임 Array로 리턴
+        val strsql="select * from ${TABLE_NAME} where $RID=${routineId};"
+        val db=readableDatabase
+        var scheduleArray = ArrayList<scheduleData>()//전체 데이터
+        var cursorDriver=db.rawQuery(strsql,null)
+
+        cursorDriver.moveToFirst()
+        do{
+            if(cursorDriver.count==0){return scheduleArray}
+            else{
+                var routineid=cursorDriver.getString(0)
+                var scheduleid=cursorDriver.getString(1)
+                var scheduleName=cursorDriver.getString(2)
+                var startTime=cursorDriver.getString(3)
+                var endTime=cursorDriver.getString(4)
+                scheduleArray.add(scheduleData(routineid.toInt(),scheduleid.toInt(),scheduleName,startTime.toInt(),endTime.toInt()))
+            }
+        }while(cursorDriver.moveToNext())
+
+        cursorDriver.close()
+        db.close()
+        return scheduleArray
+    }
+
+
+    fun updateSchedule(data:scheduleData):Boolean{
+        val sid=data.scheduleID
+        val strsql="select * from $TABLE_NAME where $SID=$sid;"
+        val db=writableDatabase
+        val cursor=db.rawQuery(strsql,null)
+        val flag=cursor.count!=0
+
+        if(flag){
+            cursor.moveToFirst()
+            val values= ContentValues()
+            values.put(SNAME,data.scheduleName)
+            values.put(SSTART,data.startTime)
+            values.put(SEND,data.endTime)
+            db.update(TABLE_NAME,values,"$SID/?", arrayOf(sid.toString()))
+        }
+        cursor.close()
+        db.close()
+        return flag
+    }
+
 }
