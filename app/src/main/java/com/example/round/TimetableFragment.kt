@@ -41,6 +41,7 @@ class TimetableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding!!.apply {
+            init()
             initHelper()
             initRecyclerView()
         }
@@ -52,16 +53,23 @@ class TimetableFragment : Fragment() {
         binding = null
     }
 
+
+
+
     fun initHelper(){
         //여기서 데이터 읽어올 거임
         var context=this.context
         this.rDBHelper= rDBHelper(context!!)
+        rDBHelper.onCreate(rDBHelper.writableDatabase)
+
         this.sDBHelper=sDBHelper(context!!)
         //데이터 넣어주고 여기서 있는거 넣어줄거임...
         this.routineArray=rDBHelper.selectAll()
         this.scheduleArray=sDBHelper.selectAll()
 
         var tempString=""
+        timetableDataList.clear()
+        Toast.makeText(context,timetableDataList.size.toString(),Toast.LENGTH_SHORT).show()
         for (i in 0 until routineArray.size-1){
             for (j in 0 until scheduleArray.size-1){
                 //같은 routine에 속하는 schedule을 넣어줘서 string으로 보여줄거임..
@@ -117,7 +125,6 @@ class TimetableFragment : Fragment() {
                     }
                 })
                 builder.setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
-
                     recyclerView.adapter=adapter
                 })
                 builder.show()
@@ -138,7 +145,13 @@ class TimetableFragment : Fragment() {
                     var intent= Intent(context, Schedule::class.java)
                     intent.putExtra("RID", data.routineID.toString())
                     startActivity(intent)
-                    Toast.makeText(context, "routineID:"+data.routineID.toString()+" 스케줄 추가화면으로 이동함",Toast.LENGTH_SHORT).show()
+
+
+                    //Toast.makeText(context, "routineID:"+data.routineID.toString()+" 스케줄 추가화면으로 이동함",Toast.LENGTH_SHORT).show()
+                    if(rDBHelper.isDisposable(data.routineID.toString())=="1")
+                        Toast.makeText(context,"일회용 시간표입니다.",Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(context,"다회용 시간표입니다.",Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -148,16 +161,50 @@ class TimetableFragment : Fragment() {
 
             add.setOnClickListener {
                 var intent= Intent(context, Routine::class.java)
+                intent.putExtra("disposable","false")
                 startActivity(intent)
             }
             tempAdd.setOnClickListener {
                 Toast.makeText(context,"일회성 시간표 만들기 파트",Toast.LENGTH_SHORT).show()
                 //루틴으로 intent실어서 보내고, 만들고 계속 수정가능할 것인지? 얘기해봐야할듯
+
+                var intent= Intent(context, Routine::class.java)
+                intent.putExtra("disposable","true")
+                startActivity(intent)
+            }
+
+
+
+            reset.setOnClickListener {
+                rDBHelper.reset()
+                rDBHelper.onCreate(rDBHelper.writableDatabase)
+                rDBHelper=rDBHelper(requireContext())
+                initHelper()
+            }
+
+        }
+
+
+
+    }
+
+    fun init(){
+        binding!!.apply {
+            refreshLayout.setOnRefreshListener {
+                initHelper()
+                initRecyclerView()
+                adapter.notifyDataSetChanged()
+                recyclerView.adapter=adapter
+                refreshLayout.isRefreshing = false
+                Toast.makeText(context, "목록을 새로고침 했습니다.", Toast.LENGTH_SHORT).show()
+                //리사이클러 어댑터 뷰의 데이터 구성이 변해서 바로 체크할 수 있도록
             }
         }
 
 
 
     }
+
+
 
 }
