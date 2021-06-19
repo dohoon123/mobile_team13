@@ -86,7 +86,7 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToFirst()
         //Name도 후보키로 중복된 데이터가 없어야할것같아요
-        if(cursorDriver.columnCount==1) {
+        if(cursorDriver.count==1) {
             rId = cursorDriver.getInt(0)
         } else {
             rId = -1
@@ -103,7 +103,7 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         var rname: String
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToFirst()
-        if(cursorDriver.columnCount==1) {
+        if(cursorDriver.count==1) {
             rname = cursorDriver.getString(1)
         } else {
             rname = ""

@@ -21,7 +21,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.github.mikephil.charting.utils.Utils.init
 
 class TodayFragment : Fragment() {
     var binding: FragmentTodayBinding?=null
@@ -106,8 +105,8 @@ class TodayFragment : Fragment() {
         )
 
         adapter.insert("선택 안함", 0)    //디폴트 (선택 안됨을 의미)
-        for(rName in rNameList) {
-            adapter.add(rName)
+        for(i in 1..rNameList.count()) {
+            adapter.insert(rNameList[i-1], i)
         }
 
         binding!!.apply {
@@ -127,7 +126,7 @@ class TodayFragment : Fragment() {
                             initCircular(null)
                         }
                         else -> {
-                            val rname = view.toString()
+                            val rname = spinner.getItemAtPosition(position).toString()
                             val rid = rDBHelper.getrId(rname)
                             if (rid == -1) {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
@@ -167,7 +166,6 @@ class TodayFragment : Fragment() {
 //        colors.add(rgb("#7f0000"))
 //        colors.add(rgb("#424242"))
 //        colors.add(rgb("#cfd8dc"))
-
         return colors
     }
 
@@ -178,8 +176,6 @@ class TodayFragment : Fragment() {
         val b = color shr 0 and 0xFF
         return Color.rgb(r, g, b)
     }
-
-
 
     fun initCircular(rid: Int?){     //루틴 ID를 인자로 받아서 그 루틴의 원형 시간표 생성
         var entries = ArrayList<PieEntry>()
