@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#DADADA"
+    android:background="@color/pink_bright"
     android:orientation="vertical"
     tools:context=".EtcFragment">
 
@@ -11,11 +11,10 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#403F3F"
-        android:backgroundTint="#403F3F"
+        android:background="@color/pink_dark"
+        android:textColor="@color/pink_bright"
         android:padding="10dp"
         android:text="부가 기능"
-        android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -27,7 +26,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
-        android:background="@drawable/layout_background"
+        android:background="@drawable/spinner_theme"
+        android:textColor="@color/pink_deep"
         android:gravity="center"
         android:padding="10dp"
         android:text="알람" />
@@ -40,7 +40,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
-        android:background="@drawable/layout_background"
+        android:background="@drawable/spinner_theme"
+        android:textColor="@color/pink_deep"
         android:gravity="center"
         android:padding="10dp"
         android:text="마이페이지" />
@@ -53,7 +54,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
-        android:background="@drawable/layout_background"
+        android:background="@drawable/spinner_theme"
+        android:textColor="@color/pink_deep"
         android:gravity="center"
         android:padding="10dp"
         android:text="부가 기능3" />
@@ -67,7 +69,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_weight="1"
-        android:background="@drawable/layout_background"
+        android:background="@drawable/spinner_theme"
+        android:textColor="@color/pink_deep"
         android:gravity="center"
         android:padding="10dp"
         android:text="부가 기능4" />

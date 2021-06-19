@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var DBHelper:rDBHelper
-    val textarr = arrayListOf<String>("시간표 리스트", "오늘의 시간표", "메모", "부가기능")
+    val textarr = arrayListOf<String>("일정관리", "원형시간표", "메모", "부가기능")
     val iconarr = arrayListOf<Int>(R.drawable.timetable, R.drawable.today, R.drawable.memo, R.drawable.etc)
     override fun onCreate(savedInstanceState: Bundle?) {
         DBHelper = rDBHelper(this)

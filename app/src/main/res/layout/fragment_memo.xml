@@ -13,10 +13,9 @@
         android:text="  메모 리스트 "
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#403F3F"
-        android:backgroundTint="#403F3F"
+        android:background="@color/pink_dark"
+        android:textColor="@color/pink_bright"
         android:padding="10dp"
-        android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:textStyle="bold"
 

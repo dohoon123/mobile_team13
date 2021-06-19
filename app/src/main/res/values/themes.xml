@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Round" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#f9a9cd</item>
-        <item name="colorPrimaryVariant">#c5799c</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/pink_main</item>
+        <item name="colorPrimaryVariant">@color/pink_dark</item>
+        <item name="colorOnPrimary">@color/pink_bright</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>

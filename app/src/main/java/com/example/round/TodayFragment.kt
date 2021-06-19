@@ -116,9 +116,13 @@ class TodayFragment : Fragment() {
 
         rDBHelper = rDBHelper(this.requireContext())
         this.routineDataArray=rDBHelper.selectAll()     //DB로 부터 존재하는 루틴 다 가져오기
+        nullDataView()
+    }
+
+    fun nullDataView() {
         if(this.routineDataArray.isNullOrEmpty()) {     //데베에 루틴 없는 경우
             binding!!.apply {
-                digitalClock.visibility = View.GONE
+                abovechart.visibility = View.GONE
                 chart.visibility = View.GONE
                 clickedChart.visibility = View.GONE
                 spinner.visibility = View.GONE
@@ -129,7 +133,7 @@ class TodayFragment : Fragment() {
 //            }
         } else {
             binding!!.apply {
-                digitalClock.visibility = View.VISIBLE
+                abovechart.visibility = View.VISIBLE
                 chart.visibility = View.VISIBLE
                 clickedChart.visibility = View.GONE
                 spinner.visibility = View.VISIBLE
@@ -139,19 +143,18 @@ class TodayFragment : Fragment() {
         }
     }
 
-
-
-
     private fun initAdapter() {
-        rNameList.add(0, "선택 안함")   //디폴트 (선택 안됨을 의미)
+        rNameList.add(0, "루틴 선택")   //디폴트 (선택 안됨을 의미)
         for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
             rNameList.add(routine.routineName)
         }
         adapter = ArrayAdapter<String>(
             this.requireContext(),
-            R.layout.simple_spinner_dropdown_item,
+            com.example.round.R.layout.spinner_custom,
+            //R.layout.simple_spinner_dropdown_item,
             rNameList
         )
+        //adapter.setDropDownViewResource()
         initSpinner()
     }
 
@@ -182,7 +185,6 @@ class TodayFragment : Fragment() {
                             rid = rDBHelper.getrId(rname)
                             publicRID= rid.toString().toInt()
 
-                            Log.i("ㅆㅂ", rid.toString())
                             if (rid == -1) {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
                             } else {
@@ -208,19 +210,18 @@ class TodayFragment : Fragment() {
 
         this.routineDataArray.clear()
         this.routineDataArray=rDBHelper.selectAll()
+        nullDataView()
         rNameList.clear()
-        rNameList.add(0, "선택 안함")   //디폴트 (선택 안됨을 의미)
+        rNameList.add(0, "루틴 선택")   //디폴트 (선택 안됨을 의미)
         for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
             rNameList.add(routine.routineName)
         }
         adapter = ArrayAdapter<String>(
             this.requireContext(),
-            R.layout.simple_spinner_dropdown_item,
+            com.example.round.R.layout.spinner_custom,
+            //R.layout.simple_spinner_dropdown_item,
             rNameList
         )
-//        for(i in 1..rNameList.count()) {
-//            adapter.insert(rNameList[i-1], i)
-//        }
 
         adapter.notifyDataSetChanged()
         //binding!!.spinner.adapter = adapter
@@ -233,7 +234,7 @@ class TodayFragment : Fragment() {
     }
     private fun defaultColors() : ArrayList<Int> {
         val colors = ArrayList<Int>()
-        colors.add(rgb("#cfd8dc"))
+        colors.add(rgb("#ffe5ff"))
         return colors
     }
 
@@ -340,15 +341,15 @@ class TodayFragment : Fragment() {
         for (c in ColorTemplate.PASTEL_COLORS) colorsItems.add(c)
         colorsItems.add(ColorTemplate.getHoloBlue())
 
-        //엔트리 중 라벨이 "" 이면 빈공간, 회색으로
+        //엔트리 중 라벨이 "" 이면 빈공간
         for(i in 0 until entries.size) {
-            if (entries[i].label == "") colorsItems.add(i, rgb("#cfd8dc"))
+            if (entries[i].label == "") colorsItems.add(i, rgb("#ffe5ff"))
         }
 
         val pieDataSet = PieDataSet(entries, "")//위에선 만든 엔트리와 색을 파이데이터셋에 연결하는 곳
         pieDataSet.apply {
             colors = colorsItems//여기 문단은 사실 안 건드려도 될 듯 합니다.
-            valueTextColor = Color.BLACK
+            valueTextColor = com.example.round.R.color.pink_deep
             valueTextSize = 20f
         }
         //pieDataSet.clear()
@@ -357,14 +358,14 @@ class TodayFragment : Fragment() {
         //확대를 안 할 때 보여지는 기본 차트입니다.
         binding!!.chart.apply {
             data = pieData
-
+            setCenterTextColor(com.example.round.R.color.pink_deep)
             isHighlightPerTapEnabled = false//클릭된 일정이 튀어나오지 않게
             pieDataSet.setDrawValues(false)
             description.isEnabled = false
             isRotationEnabled = false//손가락으로 돌리면 시간표가 돌아가는 것을 방지
             legend.isEnabled = false//레전드도 지웠습니다.
             setUsePercentValues(false)//여기가 루틴 내 스케줄들의 비율을 나타내는 부분입니다. 시간표를 깔끔하게 하려고 false
-            setEntryLabelColor(Color.BLACK)
+            setEntryLabelColor(com.example.round.R.color.pink_deep)
             animateY(1400, Easing.EaseInOutQuad)
             animate()
         }
@@ -378,7 +379,7 @@ class TodayFragment : Fragment() {
             isRotationEnabled = true//확대했을 땐 시간표를 손으로 돌려가며 짧아서 잘 안보이는 일정도 볼 수 있게
             legend.isEnabled = false
             setUsePercentValues(false)
-            setEntryLabelColor(Color.BLACK)
+            setEntryLabelColor(com.example.round.R.color.pink_deep)
             rotationAngle = 0f
             extraBottomOffset = -420f//사실 시간표가 절반만 구현되는 기능이 있는게 아니라 오프셋을 주어 윗부분만 보이게 한 겁니다.
         }
@@ -439,15 +440,15 @@ class TodayFragment : Fragment() {
                 Log.i("시간을 봅시다", currentTime.toString())
                 val elapsedTime = (startTime - currentTime) * (-1)//총 지난 시간, starttime 은 위에서 임시로 프로젝트 생성 시간을 기준으로 잡았습니다.
             // 생성 시간이 아닌 루틴 시작시간을 고려해서 수정해야할 부분입니다.
-                var fromAngle = (360F * (currentTime/1440)) - 90
+                var fromAngle = -90F-(360F * (currentTime/1440F))
                 //var toAngle = 360F * (elapsedTime/standardTime)//움직일 각도
-                var toAngle = (360F * (currentTime/1440)) - 90
+                var toAngle = 0F//-90F-(360F * (currentTime/1440F))
 
                 binding!!.chart.apply {
-                   spin(24*60*60000, fromAngle, toAngle, Easing.Linear)
+                   spin(24*60*60000, fromAngle, toAngle, Easing.Linear)    //24*60*60000
                     fromAngle = toAngle
                 }
-                handler.postDelayed(this, 60000)//1초 = 1000
+                handler.postDelayed(this, 24*60*60000)//1초 = 1000
             }
         }
         handler.post(handlerTask) // 주기적으로 실행

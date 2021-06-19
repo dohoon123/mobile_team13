@@ -15,6 +15,7 @@
         android:layout_marginBottom="236dp"
         android:ems="10"
         android:inputType="text"
+        android:textColor="@color/pink_deep"
         app:layout_constraintBottom_toTopOf="@+id/endTime"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +27,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
         android:text="스케줄명"
+        android:textColor="@color/pink_deep"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,6 +51,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginBottom="60dp"
         android:text="종료시간"
+        android:textColor="@color/pink_deep"
         app:layout_constraintBottom_toBottomOf="@+id/endTime"
         app:layout_constraintEnd_toStartOf="@+id/endTime"
         app:layout_constraintStart_toStartOf="parent" />
@@ -73,6 +76,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="96dp"
         android:text="시작시간"
+
+        android:textColor="@color/pink_deep"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -83,6 +88,8 @@
         android:layout_marginEnd="86dp"
 
         android:text="삭제"
+        android:backgroundTint="@color/pink_deep"
+        android:textColor="@color/pink_bright"
         app:layout_constraintBaseline_toBaselineOf="@+id/insertBtn"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -93,6 +100,8 @@
         android:layout_marginStart="88dp"
         android:layout_marginBottom="104dp"
         android:text="확인"
+        android:backgroundTint="@color/pink_deep"
+        android:textColor="@color/pink_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

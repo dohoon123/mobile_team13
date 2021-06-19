@@ -13,13 +13,15 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:padding="10dp"
-        android:background="@drawable/layout_background" >
+        android:background="@color/pink_bright"
+        android:textColor="@color/pink_deep" >
 
         <TextView
             android:id="@+id/routineName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
+            android:textColor="@color/pink_deep"
             android:text="routineName"
             android:textSize="20sp" />
 
@@ -27,6 +29,7 @@
             android:id="@+id/memoContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/pink_deep"
             android:text="scheduleList"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -35,6 +38,7 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/pink_deep"
             android:text="수행률" />
 
         <RatingBar

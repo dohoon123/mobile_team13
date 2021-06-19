@@ -11,7 +11,13 @@
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="#CDDC39" />
+        app:tabIndicatorColor="@color/pink_deep"
+        app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:tabIconTint="@color/pink_main"
+        app:tabTextColor="@color/pink_dark"
+        app:tabSelectedTextColor="@color/pink_deep"
+        app:tabBackground="@color/pink_bright"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

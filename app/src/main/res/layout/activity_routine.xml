@@ -13,6 +13,8 @@
         android:layout_marginTop="188dp"
         android:layout_marginBottom="189dp"
         android:text="추가"
+        android:backgroundTint="@color/pink_deep"
+        android:textColor="@color/pink_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:text="루틴 기간\n(시간 단위)"
+        android:textColor="@color/pink_deep"
         app:layout_constraintBaseline_toBaselineOf="@+id/termEdit"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -34,6 +37,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="22dp"
         android:ems="10"
+        android:textColor="@color/pink_deep"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/routineNameEdit" />
@@ -44,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="194dp"
         android:ems="10"
+        android:textColor="@color/pink_deep"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/termEdit"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:text="루틴명"
+        android:textColor="@color/pink_deep"
         app:layout_constraintBaseline_toBaselineOf="@+id/routineNameEdit"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -63,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
         android:layout_marginTop="55dp"
+        android:textColor="@color/pink_deep"
         android:text="루틴 추가창"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

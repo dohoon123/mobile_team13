@@ -20,11 +20,10 @@
             android:id="@+id/dateLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#403F3F"
-            android:backgroundTint="#403F3F"
+            android:background="@color/pink_dark"
+            android:textColor="@color/pink_bright"
             android:padding="3dp"
-            android:text="날짜 들어가는 곳"
-            android:textColor="#FFFFFF" />
+            android:text="날짜 들어가는 곳"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scoreRecyclerView"
