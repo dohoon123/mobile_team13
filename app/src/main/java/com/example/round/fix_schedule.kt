@@ -97,6 +97,11 @@ class fix_schedule : AppCompatActivity() {
                 Toast.makeText(this@fix_schedule, "목록을 새로고침 했습니다.", Toast.LENGTH_SHORT).show()
                 //리사이클러 어댑터 뷰의 데이터 구성이 변해서 바로 체크할 수 있도록
             }
+            backBtn.setOnClickListener {
+                var intent= Intent(this@fix_schedule,MainActivity::class.java)
+                intent.putExtra("back_rid",routineID.toString())  //routineID라고 되어있는데 그냥 데이터 구조때문이고 SID넣어뒀음
+                startActivity(intent)
+            }
         }
 
 

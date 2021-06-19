@@ -244,7 +244,7 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             values.put(SNAME,data.scheduleName)
             values.put(SSTART,data.startTime)
             values.put(SEND,data.endTime)
-            db.update(TABLE_NAME,values,"$SID/?", arrayOf(sid.toString()))
+            db.update(TABLE_NAME,values,SID+"="+sid,null)
         }
         cursor.close()
         db.close()
