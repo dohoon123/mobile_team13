@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">round</string>
+    <string name="app_name">나의 하루는 둥글지</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_alarm">alarm</string>
