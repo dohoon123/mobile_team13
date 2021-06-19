@@ -21,9 +21,7 @@ class Routine : AppCompatActivity() {
     fun init(){
         DBHelper = rDBHelper(this)
         var isDisposable:String = intent.getStringExtra("disposable").toString()  //1회용 시간표인지의 여부
-        binding.test.setOnClickListener {
-            Toast.makeText(this@Routine,isDisposable,Toast.LENGTH_LONG).show()
-        }
+
 
         binding.apply {
             routineInsertBtn.setOnClickListener {
@@ -42,7 +40,7 @@ class Routine : AppCompatActivity() {
                     //Toast.makeText(this@routineActivity, "Data INSERT SUCCESS", Toast.LENGTH_SHORT).show()
                     //새로운 루틴 추가 -> 스케줄 추가 화면.
                     val routineID = DBHelper.getLatestrID()//방금 추가한 rID
-                    val nextIntent = Intent(this@Routine, MainActivity::class.java)
+                    val nextIntent = Intent(this@Routine,MainActivity::class.java)
                     startActivity(nextIntent)
                 }else{
                     Toast.makeText(this@Routine, "Data INSERT FAILED", Toast.LENGTH_SHORT).show()

@@ -117,8 +117,9 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                 var routineid= cursorDriver.getString(0)
                 var routineName= cursorDriver.getString(1)
                 var routineTerm= cursorDriver.getString(2)
-                //var alarmChecked = cursorDriver.getString(3).toInt()
-                routineArray.add(routineData(routineid.toInt(), routineName, routineTerm.toInt(), 0,0))
+                var alarmChecked = cursorDriver.getString(3).toInt()
+                var disposal=cursorDriver.getString(4).toString().toInt()
+                routineArray.add(routineData(routineid.toInt(), routineName, routineTerm.toInt(),alarmChecked,disposal))
             }
         }while(cursorDriver.moveToNext())
 
