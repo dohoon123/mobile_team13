@@ -222,4 +222,19 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return result
     }
 
+    fun alarmCheckPlus(rid:Int){
+        val strsql="select * from $TABLE_NAME where $RID='$rid';"
+        val db= writableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count!=0
+
+        if (flag){
+            cursor.moveToFirst()
+            val score = cursor.getInt(3) + 1
+            val values = ContentValues()
+            values.put(ALARM, score)
+            db.update(TABLE_NAME, values, "$RID=?", arrayOf(rid.toString()))
+        }
+    }
+
 }

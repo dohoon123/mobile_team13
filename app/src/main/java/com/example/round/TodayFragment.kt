@@ -3,11 +3,14 @@ package com.example.round
 
 import android.R
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -16,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.round.databinding.FragmentTodayBinding
 import com.github.mikephil.charting.animation.Easing
@@ -183,6 +187,7 @@ class TodayFragment : Fragment() {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
                             } else {
                                 initCircular(rid)
+                                initAlarm(rid)
                                 //원형 시간표를 생성하고자 하는 루틴의 ID를 인자로 넣어서 원형 차트 함수 시작
                             }
                         }
@@ -238,6 +243,41 @@ class TodayFragment : Fragment() {
         val g = color shr 8 and 0xFF
         val b = color shr 0 and 0xFF
         return Color.rgb(r, g, b)
+    }
+
+    fun initAlarm(rid: Int?) {
+        this.sDBHelper = sDBHelper(requireContext())
+        val sql = "select * from scheduleData where routineID = '$rid';" //꼭 스케줄 리스트 starttime 순으로 정렬 해서 받아오기
+        val scheduleArray = sDBHelper.selectAll(sql)
+
+        val alarmManager =
+            requireActivity().getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val currentMin = LocalDateTime.now().minute//시간생성
+        val currentHour = LocalDateTime.now().hour
+        val currentTime = currentHour * 60 + currentMin
+
+        if (!scheduleArray.isNullOrEmpty()) {//어레이가 안 비었다면
+            for (i in 0 until scheduleArray.size) {
+                val intent = Intent(requireContext(), AlarmReceiver::class.java)
+                val endTimeToCode = scheduleArray[i].endTime//알람마다 코드 다르게
+                intent.putExtra("code", endTimeToCode)
+                intent.putExtra("rid", scheduleArray[i].routineID)//rid에 해당하는 루틴의 점수를 올려야해!
+                if (endTimeToCode > currentTime) {//현재시간보단 늦어야 해
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        requireContext(), endTimeToCode, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                    Toast.makeText(requireContext(), "알람 등록!", Toast.LENGTH_SHORT).show()
+                    val triggerTime = (SystemClock.elapsedRealtime()
+                            + (endTimeToCode - currentTime) * 60000)//초 * 1000 -> 60000 == (1분) 여기 분단위임
+                    alarmManager.set(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        triggerTime,
+                        pendingIntent
+                    )
+                }
+            }
+        }
     }
 
     fun initCircular(rid: Int?){     //루틴 ID를 인자로 받아서 그 루틴의 원형 시간표 생성
