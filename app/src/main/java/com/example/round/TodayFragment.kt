@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.time.LocalDateTime
 
 class TodayFragment : Fragment() {
     var binding: FragmentTodayBinding?=null
@@ -79,6 +80,7 @@ class TodayFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         updateSpinner()
+        initCircular(rid)
         //initSpinner()   //프레그먼트 다시 시작 됐을 때 이닛스피너 갱신
     }
     override fun onDestroyView() {
@@ -289,10 +291,7 @@ class TodayFragment : Fragment() {
         }
         //원형 차트에 엔트리 추가 끝
 
-        val startTime = System.currentTimeMillis()
-        var fromAngle = 0f
-        val standardTime = 60000F//임시로 1분! 1분에 한바퀴
-        val handler = Handler()
+
 
         for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
         for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
@@ -390,19 +389,25 @@ class TodayFragment : Fragment() {
         binding!!.chart.onChartGestureListener = gesture//리스너를 연결해 주었습니다.
         binding!!.clickedChart.onChartGestureListener = gesture
 
+        val startTime = 0
+
+        val standardTime = 60000F//임시로 1분! 1분에 한바퀴
+        val handler = Handler()
         val handlerTask = object : Runnable {//주기적으로 시간표를 돌리는 핸들러
             override fun run() {
-                val currentTime = System.currentTimeMillis()//임시로 설정한 현재 시간입니다.
+                val currentTime = LocalDateTime.now().minute + LocalDateTime.now().hour*60
+                Log.i("시간을 봅시다", currentTime.toString())
                 val elapsedTime = (startTime - currentTime) * (-1)//총 지난 시간, starttime 은 위에서 임시로 프로젝트 생성 시간을 기준으로 잡았습니다.
             // 생성 시간이 아닌 루틴 시작시간을 고려해서 수정해야할 부분입니다.
-
-                var toAngle = 360F * (elapsedTime/standardTime)//움직일 각도
+                var fromAngle = (360F * (currentTime/1440)) - 90
+                //var toAngle = 360F * (elapsedTime/standardTime)//움직일 각도
+                var toAngle = (360F * (currentTime/1440)) - 90
 
                 binding!!.chart.apply {
-                   spin(1000, fromAngle, toAngle, Easing.Linear)
+                   spin(24*60*60000, fromAngle, toAngle, Easing.Linear)
                     fromAngle = toAngle
                 }
-                handler.postDelayed(this, 1000)//1초 = 1000
+                handler.postDelayed(this, 60000)//1초 = 1000
             }
         }
         handler.post(handlerTask) // 주기적으로 실행
