@@ -80,9 +80,9 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     //루틴의 이름을 받아서 루틴 아이디를 반환해주는 함수. 일치하는 루틴 없으면 -1 반환
     fun getrId(rname: String) : Int {
-        val strsql="select * from $TABLE_NAME where $RNAME = ${rname};"
+        val strsql= "select * from $TABLE_NAME where $RNAME = '"+"${rname}';"
         val db = readableDatabase
-        var rId:Int
+        var rId:Int = 0
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToFirst()
         //Name도 후보키로 중복된 데이터가 없어야할것같아요
@@ -162,7 +162,7 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     //1회용 시간표인지의 여부 알려주는 함수
     fun isDisposable(routineId:String):String{
         var temp=""
-        val strsql="select * from $TABLE_NAME where $RID='${routineId}';"
+        val strsql="select * from $TABLE_NAME where $RID='$routineId';"
         val db=readableDatabase
         val cursor=db.rawQuery(strsql,null)
         val flag=cursor.count!=0

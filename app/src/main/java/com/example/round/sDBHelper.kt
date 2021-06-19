@@ -83,6 +83,38 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return scheduleArray
     }
 
+    fun selectAll(sql: String, value : Int):ArrayList<scheduleData> {
+        val db = readableDatabase
+        var scheduleArray = ArrayList<scheduleData>()
+        var cursorDriver=db.rawQuery(sql, null)
+        cursorDriver.moveToFirst()
+        val attrcount=cursorDriver.columnCount
+
+        //맨 위에 그 타이틀 읽어와서 붙여준 거임
+        var routineid=cursorDriver.getString(0)
+        var scheduleid=cursorDriver.getString(1)
+        var scheduleName=cursorDriver.getString(2)
+        var startTime=cursorDriver.getString(3)
+        var endTime=cursorDriver.getString(4)
+        scheduleArray.add(scheduleData(routineid.toInt(),scheduleid.toInt(),scheduleName,startTime.toInt(),endTime.toInt()))
+        //데이터를 읽어와서 넣어줄 거임
+        //var routineID: Int, var scheduleID: Int, var scheduleName: String, var startTime: Int, var endTime: Int
+        do{
+            if(cursorDriver.count==0){return scheduleArray}
+            else{
+                var routineid=cursorDriver.getString(0)
+                var scheduleid=cursorDriver.getString(1)
+                var scheduleName=cursorDriver.getString(2)
+                var startTime=cursorDriver.getString(3)
+                var endTime=cursorDriver.getString(4)
+                scheduleArray.add(scheduleData(routineid.toInt(),scheduleid.toInt(),scheduleName,startTime.toInt(),endTime.toInt()))
+            }
+        }while(cursorDriver.moveToNext())
+
+        cursorDriver.close()
+        db.close()
+        return scheduleArray
+    }
 
     fun selectAll():ArrayList<scheduleData>{
         //routine데이터 전부 다 가져올거임 Array로 리턴

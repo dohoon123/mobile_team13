@@ -178,6 +178,7 @@ class TodayFragment : Fragment() {
     }
 
     fun initCircular(rid: Int?){     //루틴 ID를 인자로 받아서 그 루틴의 원형 시간표 생성
+        this.sDBHelper= sDBHelper(requireContext())
         var entries = ArrayList<PieEntry>()
         var colorsItems = ArrayList<Int>()//색깔 정하는 부분 사실 이 부분은 저도 따라 친거라 잘 모르겠네요;;
 
@@ -187,7 +188,7 @@ class TodayFragment : Fragment() {
             binding!!.chart.centerText = """원형 시간표로 보고싶은
                 | 루틴을 선택하세요!""".trimMargin()
         } else {    //루틴 아이디 존재할 경우
-            val sql = "select * from scheduleData where rountineID = ${rid} order by startTime" //꼭 스케줄 리스트 starttime 순으로 정렬 해서 받아오기
+            val sql = "select * from scheduleData where routineID = '$rid' order by startTime;" //꼭 스케줄 리스트 starttime 순으로 정렬 해서 받아오기
             val scheduleDataArray = sDBHelper.selectAll(sql)    //루틴 ID가 가진 스케줄 데이터 다 가져오기
 
             //스피너서 선택한 루틴 이름으로부터 루틴 ID를 얻어와 그것과 일치하는 스케줄 데이터 어레이 가져옴
