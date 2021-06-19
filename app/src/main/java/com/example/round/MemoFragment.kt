@@ -30,28 +30,22 @@ class MemoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initHelper()
+        initRecyclerView()
+        init()
+    }
+
+    fun initHelper(){
         MemoDBHelper = MemoDBHelper(getActivity())
-
-        //메모 추가 영역. tempList.add를 insertMemo로 변경.
-//        MemoDBHelper.insertMemo(memoData(1,"제목1","내용 메모 예시"))
-//        MemoDBHelper.insertMemo(memoData(2,"제목2","내용 메모 예시"))
-//        MemoDBHelper.insertMemo(memoData(3,"제목3","내용 메모 예시"))
-//        MemoDBHelper.insertMemo(memoData(4,"제목4","내용 메모 예시"))
-
-
-        //메모 추가 후 tempList 가져옴.
         tempList = MemoDBHelper?.getMemo()
-
-
 
         binding.apply {
             recyclerView=binding!!.memoRecyclerView
-            recyclerView.layoutManager= LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL,false)
+            recyclerView.layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
 
             adapter= MyAdapter(tempList)
             recyclerView.adapter=adapter }
-
-        initRecyclerView()
     }
 
     private fun initRecyclerView(){
@@ -71,6 +65,19 @@ class MemoFragment : Fragment() {
                 }else{
                     Toast.makeText(context, "Delete Failed", Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+    fun init(){
+        binding!!.apply {
+            refreshLayout.setOnRefreshListener {
+                initHelper()
+                initRecyclerView()
+                adapter.notifyDataSetChanged()
+                recyclerView.adapter=adapter
+                refreshLayout.isRefreshing = false
+                Toast.makeText(context, "목록을 새로고침 했습니다.", Toast.LENGTH_SHORT).show()
+                //리사이클러 어댑터 뷰의 데이터 구성이 변해서 바로 체크할 수 있도록
             }
         }
     }
