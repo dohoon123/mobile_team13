@@ -94,7 +94,23 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         cursorDriver.close()
         db.close()
         return rId
+    }
 
+    //루틴의 ID받아서 Rid와 일치하는 튜플의 rname 반환
+    fun getrName(rid: Int) : String {
+        val strsql="select * from $TABLE_NAME where $RID = $rid;"
+        val db = readableDatabase
+        var rname: String
+        var cursorDriver = db.rawQuery(strsql, null)
+        cursorDriver.moveToFirst()
+        if(cursorDriver.columnCount==1) {
+            rname = cursorDriver.getString(1)
+        } else {
+            rname = ""
+        }
+        cursorDriver.close()
+        db.close()
+        return rname
     }
 
     fun selectAll():ArrayList<routineData>{
