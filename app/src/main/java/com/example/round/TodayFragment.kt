@@ -2,9 +2,12 @@ package com.example.round
 
 
 import android.R
+import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -24,11 +27,20 @@ import com.github.mikephil.charting.utils.ColorTemplate
 
 class TodayFragment : Fragment() {
     var binding: FragmentTodayBinding?=null
-    lateinit var MemoDBHelper: MemoDBHelper
-    lateinit var routineDataArray:ArrayList<routineData>
-    lateinit var scheduleArray:ArrayList<scheduleData>
     lateinit var rDBHelper: rDBHelper
     lateinit var sDBHelper: sDBHelper
+    lateinit var MemoDBHelper: MemoDBHelper
+    lateinit var routineDataArray:ArrayList<routineData>
+    var rid : Int? = null
+
+    var isinit : Boolean = false
+    var rNameList : ArrayList<String> = ArrayList<String>()
+    var entries : ArrayList<PieEntry> = ArrayList()
+    var colorsItems : ArrayList<Int> = ArrayList()
+
+    //layout에 어레이의 데이터를 매핑 시켜서 보여주는 어댑터
+    lateinit var adapter : ArrayAdapter<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,9 +52,12 @@ class TodayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        initSpinner()   //스피너 만들기
+        initAdapter()
+        isinit = true
+        updateSpinner()
+        //initSpinner()   //스피너 만들기
         //원형 스케줄러
-        initCircular(null)
+        //initCircular(null)
 
         //메모 추가
         MemoDBHelper = MemoDBHelper(getActivity())
@@ -54,25 +69,20 @@ class TodayFragment : Fragment() {
         }
     }
 
+
+
     override fun onResume() {
         super.onResume()
-        initSpinner()   //프레그먼트 다시 시작 됐을 때 이닛스피너 갱신
+        updateSpinner()
+        //initSpinner()   //프레그먼트 다시 시작 됐을 때 이닛스피너 갱신
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
     private fun init() {
-
-    }
-
-    private fun initSpinner() {     //DB의 루틴의 이름들을 모두 가져와서 스피너의 각 항목에 넣어줌
-        var rNameList = ArrayList<String>() //데베에 존재하는 모든 루틴의 이름들
-
-        this.rDBHelper= rDBHelper(requireContext())
+        rDBHelper = rDBHelper(this.requireContext())
         this.routineDataArray=rDBHelper.selectAll()     //DB로 부터 존재하는 루틴 다 가져오기
-
         if(this.routineDataArray.isNullOrEmpty()) {     //데베에 루틴 없는 경우
             binding!!.apply {
                 digitalClock.visibility = View.GONE
@@ -92,26 +102,28 @@ class TodayFragment : Fragment() {
                 spinner.visibility = View.VISIBLE
                 noRoutine.visibility = View.GONE
             }
-            for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
-                rNameList.add(routine.routineName)
-            }
+            initCircular(rid)
         }
+    }
 
-        //layout에 어레이의 데이터를 매핑 시켜서 보여주는 어댑터
-        val adapter = ArrayAdapter<String>(
-            requireContext(),
+    private fun initAdapter() {
+        rNameList.add(0, "선택 안함")   //디폴트 (선택 안됨을 의미)
+        for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
+            rNameList.add(routine.routineName)
+        }
+        adapter = ArrayAdapter<String>(
+            this.requireContext(),
             R.layout.simple_spinner_dropdown_item,
             rNameList
         )
+        initSpinner()
+    }
 
-        adapter.insert("선택 안함", 0)    //디폴트 (선택 안됨을 의미)
-        for(i in 1..rNameList.count()) {
-            adapter.insert(rNameList[i-1], i)
-        }
-
+    private fun initSpinner() {     //DB의 루틴의 이름들을 모두 가져와서 스피너의 각 항목에 넣어줌
+        //adapter.clear()
         binding!!.apply {
             spinner.adapter = adapter
-            spinner.setSelection(0) //디폴트(아직 루틴 선택 안한 거)로 처음에 설정
+            spinner.setSelection(0, false) //디폴트(아직 루틴 선택 안한 거)로 처음에 설정
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -119,53 +131,67 @@ class TodayFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    //아이템 선택되면 선택된 루틴
+                    //if(isinit) {
                     when(position) {
                         0 -> {
                             //아직 루틴을 설정하지 않았으므로, 원형 시간표 보여줄게 없음. 루틴 이름을 선택하게 해야함
                             initCircular(null)
                         }
                         else -> {
+
                             val rname = spinner.getItemAtPosition(position).toString()
-                            val rid = rDBHelper.getrId(rname)
+                            rid = rDBHelper.getrId(rname)
+                            Log.i("ㅆㅂ", rid.toString())
                             if (rid == -1) {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
                             } else {
-                                //원형 시간표를 생성하고자 하는 루틴의 ID를 인자로 넣어서 원형 차트 함수 시작
                                 initCircular(rid)
+                                //원형 시간표를 생성하고자 하는 루틴의 ID를 인자로 넣어서 원형 차트 함수 시작
                             }
                         }
                     }
+                    //}
                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
         }
+
+        //adapter.notifyDataSetChanged()
+    }
+
+    private fun updateSpinner() {
+        rDBHelper = rDBHelper(this.requireContext())
+        //adapter?.clear()
+
+        this.routineDataArray.clear()
+        this.routineDataArray=rDBHelper.selectAll()
+        rNameList.clear()
+        rNameList.add(0, "선택 안함")   //디폴트 (선택 안됨을 의미)
+        for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
+            rNameList.add(routine.routineName)
+        }
+        adapter = ArrayAdapter<String>(
+            this.requireContext(),
+            R.layout.simple_spinner_dropdown_item,
+            rNameList
+        )
+//        for(i in 1..rNameList.count()) {
+//            adapter.insert(rNameList[i-1], i)
+//        }
+
+        adapter.notifyDataSetChanged()
+        //binding!!.spinner.adapter = adapter
     }
 
     private fun defaultEntries() : ArrayList<PieEntry> {
         val entries = ArrayList<PieEntry>()
         entries.add(PieEntry(500f, ""))
-//        entries.add(PieEntry(500f, "술래잡기"))//엔트리에 파이엔트리를 추가하는 부분
-//        entries.add(PieEntry(500f, "고무줄놀이"))//MPAndroidChart라이브러리는 파이 말고도 다른 형태가 있다
-//        entries.add(PieEntry(500f, "말뚝박기"))//pieentry의 value값을 통해 시간표의 크기를 지정한다.
-//        entries.add(PieEntry(500f, "망까기"))//이전에 입력시간 endtime과 새로 입력한 starttime의 값이 일치하지 않는 경우
-//        entries.add(PieEntry(500f, "말타기"))//사이의 빈 시간에 쓰레기값을 add해주는 부분이 필요할 것 같다.
-//        entries.add(PieEntry(500f, "놀기"))
-//        entries.add(PieEntry(500f, "먹기"))
         return entries
     }
     private fun defaultColors() : ArrayList<Int> {
         val colors = ArrayList<Int>()
         colors.add(rgb("#cfd8dc"))
-//        colors.add(rgb("#455a64"))
-//        colors.add(rgb("#bf360c"))
-//        colors.add(rgb("#004d40"))
-//        colors.add(rgb("#000063"))
-//        colors.add(rgb("#560027"))
-//        colors.add(rgb("#7f0000"))
-//        colors.add(rgb("#424242"))
-//        colors.add(rgb("#cfd8dc"))
         return colors
     }
 
@@ -178,9 +204,9 @@ class TodayFragment : Fragment() {
     }
 
     fun initCircular(rid: Int?){     //루틴 ID를 인자로 받아서 그 루틴의 원형 시간표 생성
-        this.sDBHelper= sDBHelper(requireContext())
-        var entries = ArrayList<PieEntry>()
-        var colorsItems = ArrayList<Int>()//색깔 정하는 부분 사실 이 부분은 저도 따라 친거라 잘 모르겠네요;;
+        sDBHelper = sDBHelper(requireContext())
+        if(entries.isNotEmpty()) entries.clear()
+        if(colorsItems.isNotEmpty()) colorsItems.clear()
 
         if (rid == null) {  //따로 받아온 루틴 없으면
             entries = defaultEntries()
@@ -220,12 +246,7 @@ class TodayFragment : Fragment() {
                     } else {    //현재 작업 중인 스케줄 항목이 마지막꺼 아니면, 다음 스케줄과 비교해서 빈공간 넣기
                         val nextS = scheduleDataArray[i + 1]
                         if (nextS.startTime != s.endTime) {
-                            entries.add(
-                                PieEntry(
-                                    (s.endTime - s.startTime).toFloat(),
-                                    s.scheduleName
-                                )
-                            )
+                            entries.add(PieEntry((nextS.startTime - s.endTime).toFloat(), ""))
                         }
                     }
                 }
@@ -238,9 +259,6 @@ class TodayFragment : Fragment() {
         val standardTime = 60000F//임시로 1분! 1분에 한바퀴
         val handler = Handler()
 
-        //연석씨 제 주석을 받아주세요!
-        //저는 fragment_today 레이아웃에서 파이 차트를 2개 만들어서 클릭 할 때마다 visibility를 gone <->
-        //한 번에 하나씩만 보이게 했습니다. 동적으로 부드럽게 zoom in/out 하는 방법은 아무리 뒤져도 안 보이더군여..
         for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
         for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
         for (c in ColorTemplate.COLORFUL_COLORS) colorsItems.add(c)
@@ -259,6 +277,7 @@ class TodayFragment : Fragment() {
             valueTextColor = Color.BLACK
             valueTextSize = 20f
         }
+        //pieDataSet.clear()
 
         val pieData = PieData(pieDataSet)
         //확대를 안 할 때 보여지는 기본 차트입니다.
@@ -323,17 +342,12 @@ class TodayFragment : Fragment() {
                 lastPerformedGesture: ChartTouchListener.ChartGesture?
             ) {
             }
-
             override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-
             }
-
             override fun onChartLongPressed(me: MotionEvent?) {
             }
-
             override fun onChartDoubleTapped(me: MotionEvent?) {
             }
-
             override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
             }
         }

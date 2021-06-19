@@ -80,7 +80,7 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     //루틴의 이름을 받아서 루틴 아이디를 반환해주는 함수. 일치하는 루틴 없으면 -1 반환
     fun getrId(rname: String) : Int {
-        val strsql= "select * from $TABLE_NAME where $RNAME = '"+"${rname}';"
+        val strsql= "select * from $TABLE_NAME where $RNAME = '${rname}';"
         val db = readableDatabase
         var rId:Int = 0
         var cursorDriver = db.rawQuery(strsql, null)

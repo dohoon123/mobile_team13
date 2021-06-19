@@ -70,8 +70,8 @@ class TimetableFragment : Fragment() {
         var tempString=""
         timetableDataList.clear()
         Toast.makeText(context,timetableDataList.size.toString(),Toast.LENGTH_SHORT).show()
-        for (i in 0 until routineArray.size-1){
-            for (j in 0 until scheduleArray.size-1){
+        for (i in 0 until routineArray.size){
+            for (j in 0 until scheduleArray.size){
                 //같은 routine에 속하는 schedule을 넣어줘서 string으로 보여줄거임..
                 if(scheduleArray[j].routineID==routineArray[i].routineID){
                     var name=scheduleArray[j].scheduleName.toString()
