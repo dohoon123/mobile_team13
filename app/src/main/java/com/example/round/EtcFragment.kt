@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.round.databinding.FragmentEtcBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class EtcFragment : Fragment() {
     var binding: FragmentEtcBinding?=null
@@ -26,7 +27,8 @@ class EtcFragment : Fragment() {
                 startActivity(intent)
             }
             myPage.setOnClickListener {
-
+                val intent = Intent(context, MyPageActivity::class.java)
+                startActivity(intent)
             }
             etcmenu3.setOnClickListener {
 
@@ -40,4 +42,5 @@ class EtcFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+
 }

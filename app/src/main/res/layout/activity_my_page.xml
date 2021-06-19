@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".myPageFragment">
+    tools:context=".MyPageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,11 @@
             android:id="@+id/dateLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="날짜 들어가는 곳" />
+            android:background="#403F3F"
+            android:backgroundTint="#403F3F"
+            android:padding="3dp"
+            android:text="날짜 들어가는 곳"
+            android:textColor="#FFFFFF" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scoreRecyclerView"
