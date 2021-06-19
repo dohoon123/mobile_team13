@@ -4,6 +4,7 @@ package com.example.round
 import android.R
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -32,6 +33,7 @@ class TodayFragment : Fragment() {
     lateinit var MemoDBHelper: MemoDBHelper
     lateinit var routineDataArray:ArrayList<routineData>
     var rid : Int? = null
+    var publicRID=0
 
     var isinit : Boolean = false
     var rNameList : ArrayList<String> = ArrayList<String>()
@@ -50,6 +52,9 @@ class TodayFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //스피너 선택안된 상태면 버튼 클릭 불가능하도록
+        binding!!.addButton.isEnabled=false
+        binding!!.fixBtn.isEnabled=false
 
         init()
         initAdapter()
@@ -63,8 +68,8 @@ class TodayFragment : Fragment() {
         MemoDBHelper = MemoDBHelper(getActivity())
         memoInsert()
         binding!!.apply {
-            addBtn.setOnClickListener {
-                //데이터 베이스에서 루틴 가져와서 ID 받아서 스케줄 오픈, 차트에 넣기
+            addButton.setOnClickListener {
+                //도훈님이 추가
             }
         }
     }
@@ -81,6 +86,28 @@ class TodayFragment : Fragment() {
         binding = null
     }
     private fun init() {
+            binding!!.apply {
+
+                //두 버튼 모두 스케줄 추가화면으로 이동이라서, 구현하고 시간남으면 수정부분은 리스트를 통해서 조회할 수 있도록 activity 추가해서 바꿔보기
+
+                fixBtn.setOnClickListener {
+                    //수정해주는 화면, 루틴삭제는 안되고 스케줄 삭제만 가능하도록 해야할 것 같음
+                    var intent= Intent(context, fix_schedule::class.java)
+                    intent.putExtra("RID", publicRID.toString())
+                    startActivity(intent)
+                }
+
+                addButton.setOnClickListener {
+                    //해당 루틴 아이디를 가진 데로 이동해줌
+                    var intent= Intent(context, Schedule::class.java)
+                    intent.putExtra("RID", publicRID.toString())
+                    startActivity(intent)
+                }
+
+
+            }
+
+
         rDBHelper = rDBHelper(this.requireContext())
         this.routineDataArray=rDBHelper.selectAll()     //DB로 부터 존재하는 루틴 다 가져오기
         if(this.routineDataArray.isNullOrEmpty()) {     //데베에 루틴 없는 경우
@@ -105,6 +132,9 @@ class TodayFragment : Fragment() {
             initCircular(rid)
         }
     }
+
+
+
 
     private fun initAdapter() {
         rNameList.add(0, "선택 안함")   //디폴트 (선택 안됨을 의미)
@@ -138,9 +168,14 @@ class TodayFragment : Fragment() {
                             initCircular(null)
                         }
                         else -> {
+                            //스피너 선택되면 버튼 선택 가능하도록
+                            binding!!.addButton.isEnabled=true
+                            binding!!.fixBtn.isEnabled=true
 
                             val rname = spinner.getItemAtPosition(position).toString()
                             rid = rDBHelper.getrId(rname)
+                            publicRID= rid.toString().toInt()
+
                             Log.i("ㅆㅂ", rid.toString())
                             if (rid == -1) {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
@@ -401,4 +436,6 @@ class TodayFragment : Fragment() {
             }
         }
     }
+
+
 }
