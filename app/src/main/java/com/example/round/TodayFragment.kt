@@ -79,8 +79,6 @@ class TodayFragment : Fragment() {
         }
     }
 
-
-
     override fun onResume() {
         super.onResume()
         updateSpinner()
@@ -93,9 +91,7 @@ class TodayFragment : Fragment() {
     }
     private fun init() {
             binding!!.apply {
-
                 //두 버튼 모두 스케줄 추가화면으로 이동이라서, 구현하고 시간남으면 수정부분은 리스트를 통해서 조회할 수 있도록 activity 추가해서 바꿔보기
-
                 fixBtn.setOnClickListener {
                     //수정해주는 화면, 루틴삭제는 안되고 스케줄 삭제만 가능하도록 해야할 것 같음
                     var intent= Intent(context, fix_schedule::class.java)
@@ -110,9 +106,7 @@ class TodayFragment : Fragment() {
                     startActivity(intent)
                 }
 
-
             }
-
 
         rDBHelper = rDBHelper(this.requireContext())
         this.routineDataArray=rDBHelper.selectAll()     //DB로 부터 존재하는 루틴 다 가져오기
@@ -127,6 +121,7 @@ class TodayFragment : Fragment() {
                 clickedChart.visibility = View.GONE
                 spinner.visibility = View.GONE
                 noRoutine.visibility = View.VISIBLE
+                rid = null
             }
 //            binding!!.noRoutine.setOnClickListener {
 //                //클릭하면 루틴 추가 페이지로 이동하고 시픈데,,
@@ -145,8 +140,10 @@ class TodayFragment : Fragment() {
 
     private fun initAdapter() {
         rNameList.add(0, "루틴 선택")   //디폴트 (선택 안됨을 의미)
-        for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
-            rNameList.add(routine.routineName)
+        if (!routineDataArray.isNullOrEmpty()) {
+            for (routine in routineDataArray) {     //루틴 아이템마다 이름 가져와서 이름 리스트에 추가
+                rNameList.add(routine.routineName)
+            }
         }
         adapter = ArrayAdapter<String>(
             this.requireContext(),
@@ -173,8 +170,9 @@ class TodayFragment : Fragment() {
                     //if(isinit) {
                     when(position) {
                         0 -> {
+                            rid = null
                             //아직 루틴을 설정하지 않았으므로, 원형 시간표 보여줄게 없음. 루틴 이름을 선택하게 해야함
-                            initCircular(null)
+                            initCircular(rid)
                         }
                         else -> {
                             //스피너 선택되면 버튼 선택 가능하도록
@@ -187,6 +185,7 @@ class TodayFragment : Fragment() {
 
                             if (rid == -1) {
                                 //루틴 이름과 일치하는 아이디가 없다 -> 오류
+                                Toast.makeText(context, "선택한 스피너와 일치하는 루틴이 없습니다.", Toast.LENGTH_SHORT).show()
                             } else {
                                 initCircular(rid)
                                 initAlarm(rid)
@@ -194,13 +193,11 @@ class TodayFragment : Fragment() {
                             }
                         }
                     }
-                    //}
                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
         }
-
         //adapter.notifyDataSetChanged()
     }
 
@@ -222,7 +219,7 @@ class TodayFragment : Fragment() {
             //R.layout.simple_spinner_dropdown_item,
             rNameList
         )
-
+        //binding!!.spinner.setSelection(0,false)
         adapter.notifyDataSetChanged()
         //binding!!.spinner.adapter = adapter
     }
@@ -287,10 +284,11 @@ class TodayFragment : Fragment() {
 
     fun initCircular(rid: Int?){     //루틴 ID를 인자로 받아서 그 루틴의 원형 시간표 생성
         sDBHelper = sDBHelper(requireContext())
+        //이미 이전에 한번 보여준 시간표 있으면 비워주기 위함
         if(entries.isNotEmpty()) entries.clear()
         if(colorsItems.isNotEmpty()) colorsItems.clear()
 
-        if (rid == null) {  //따로 받아온 루틴 없으면
+        if (rid == null) {  //따로 받아온 루틴 없으면 디폴트 시간표 보여주기
             entries = defaultEntries()
             colorsItems = defaultColors()
             binding!!.chart.centerText = """원형 시간표로 보고싶은
@@ -336,8 +334,7 @@ class TodayFragment : Fragment() {
         }
         //원형 차트에 엔트리 추가 끝
 
-
-
+        //색깔 여러개 넣어두기
         for (c in ColorTemplate.VORDIPLOM_COLORS) colorsItems.add(c)
         for (c in ColorTemplate.JOYFUL_COLORS) colorsItems.add(c)
         for (c in ColorTemplate.COLORFUL_COLORS) colorsItems.add(c)
@@ -345,14 +342,14 @@ class TodayFragment : Fragment() {
         for (c in ColorTemplate.PASTEL_COLORS) colorsItems.add(c)
         colorsItems.add(ColorTemplate.getHoloBlue())
 
-        //엔트리 중 라벨이 "" 이면 빈공간
+        //엔트리 중 라벨이 "" 이면 빈공간으로 판단.
         for(i in 0 until entries.size) {
             if (entries[i].label == "") colorsItems.add(i, rgb("#ffe5ff"))
         }
 
         val pieDataSet = PieDataSet(entries, "")//위에선 만든 엔트리와 색을 파이데이터셋에 연결하는 곳
         pieDataSet.apply {
-            colors = colorsItems//여기 문단은 사실 안 건드려도 될 듯 합니다.
+            colors = colorsItems
             valueTextColor = com.example.round.R.color.pink_deep
             valueTextSize = 20f
         }
@@ -394,7 +391,6 @@ class TodayFragment : Fragment() {
             lastPerformedGesture: ChartTouchListener.ChartGesture?
         ) {//안 쓰는 메소드도 오버라이드해야해서 좀 지저분하져..
         }
-
             override fun onChartFling(
                 me1: MotionEvent?,
                 me2: MotionEvent?,
@@ -402,7 +398,6 @@ class TodayFragment : Fragment() {
                 velocityY: Float
             ) {
             }
-
             override fun onChartSingleTapped(me: MotionEvent?) {
                 binding!!.apply {
                     if (chart.visibility == View.VISIBLE && clickedChart.visibility == View.GONE){
@@ -415,28 +410,21 @@ class TodayFragment : Fragment() {
                     }
                 }
             }
-
             override fun onChartGestureStart(
                 me: MotionEvent?,
                 lastPerformedGesture: ChartTouchListener.ChartGesture?
-            ) {
-            }
-            override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-            }
-            override fun onChartLongPressed(me: MotionEvent?) {
-            }
-            override fun onChartDoubleTapped(me: MotionEvent?) {
-            }
-            override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
-            }
+            ) {}
+            override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {}
+            override fun onChartLongPressed(me: MotionEvent?) {}
+            override fun onChartDoubleTapped(me: MotionEvent?) {}
+            override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {}
         }
 
         binding!!.chart.onChartGestureListener = gesture//리스너를 연결해 주었습니다.
         binding!!.clickedChart.onChartGestureListener = gesture
 
         val startTime = 0
-
-        val standardTime = 60000F//임시로 1분! 1분에 한바퀴
+        //val standardTime = 60000F//임시로 1분! 1분에 한바퀴
         val handler = Handler()
         val handlerTask = object : Runnable {//주기적으로 시간표를 돌리는 핸들러
             override fun run() {

@@ -11,12 +11,14 @@
     <TextView
         android:id="@+id/noRoutine"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="저장된 루틴이 없습니다. \n 루틴을 만들어주세요"
-        android:textSize="32dp"
+        android:textSize="28dp"
+        android:padding="10dp"
         android:textStyle="bold"
-        android:textColor="@color/pink_dark"
+        android:textColor="@color/pink_deep"
+        android:backgroundTint="@color/pink_bright"
         android:background="@drawable/spinner_theme"/>
 
     <LinearLayout
