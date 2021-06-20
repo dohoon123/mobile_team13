@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val time = intent.getIntExtra("time", 100)
             val rid = intent.getIntExtra("rid", 100)
             val isEnd = intent.getBooleanExtra("isEnd", false)
-            if(currentTime - time < 10){//10분안에 누르면
+            if(currentTime - time < 5){//10분안에 누르면
                 var flag = DBHelper.alarmCheckPlus(rid)
                 //Toast.makeText(this, "알람!", Toast.LENGTH_SHORT).show()
                 if (flag){
@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                 //평가 등록
                 scoreDBHelper.insertScore(rid, routineName)
             }
-
         }
     }
 
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 val currentTime = currentHour*60 + currentMin
                 val time = intent.getIntExtra("time", 100)
                 val rid = intent.getIntExtra("rid", 100)
-                if(currentTime - time < 10){//10분안에 누르면
+                if(currentTime - time < 5){//10분안에 누르면
                     DBHelper.alarmCheckPlus(rid)
                     Toast.makeText(this, "알람!", Toast.LENGTH_SHORT).show()
                 }

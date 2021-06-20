@@ -260,6 +260,7 @@ class TodayFragment : Fragment() {
                 val endTimeToCode = scheduleArray[i].endTime//알람마다 코드 다르게
                 intent.putExtra("code", endTimeToCode)
                 intent.putExtra("rid", scheduleArray[i].routineID)//rid에 해당하는 루틴의 점수를 올려야해!
+                intent.putExtra("sname", scheduleArray[i].scheduleName)//rid에 해당하는 루틴의 점수를 올려야해!
                 if(i == scheduleArray.size-1){//마지막 알람이면 끝임을 알려준다!
                     intent.putExtra("isEnd", true)
                 }

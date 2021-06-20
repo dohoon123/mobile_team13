@@ -24,16 +24,17 @@ class AlarmReceiver : BroadcastReceiver() {
         DBHelper = rDBHelper(context)
         val code = intent.getIntExtra("code", -1)
         val rid = intent.getIntExtra("rid", -1)
+        val sname = intent.getStringExtra("sname")
         var isEnd = intent.getBooleanExtra("isEnd", false) //마지막 스케줄인지 확인
 
         notificationManager = context.getSystemService(
             Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel()
-        deliverNotification(context, code, rid, isEnd)
+        deliverNotification(context, code, rid, isEnd, sname!!)
     }
 
-    private fun deliverNotification(context: Context, code:Int, rid:Int, isEnd:Boolean) {
+    private fun deliverNotification(context: Context, code:Int, rid:Int, isEnd:Boolean, sname:String) {
         val contentIntent = Intent(context, MainActivity::class.java)
         contentIntent.putExtra("time", code)
         contentIntent.putExtra("rid", rid)
@@ -49,7 +50,7 @@ class AlarmReceiver : BroadcastReceiver() {
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
                 .setSmallIcon(R.drawable.memo)
                 .setContentTitle("Alert")
-                .setContentText("조삼..모사..")
+                .setContentText(sname)
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
