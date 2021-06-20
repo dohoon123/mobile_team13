@@ -143,7 +143,7 @@ class TimetableFragment : Fragment() {
                 override fun OnItemClick(holder: MyAdapter.ViewHolder, view: View, data: memoData, position: Int) {
                     //클릭됐을때 생성 및 수정이 가능하도록 이동하기. 이미 존재하는 페이지로 이동하는 이유는 같은routineIdr를 입력하면 수정되도록
                     var intent= Intent(context, Schedule::class.java)
-                    intent.putExtra("RID", data.id)
+                    intent.putExtra("RID", data.id.toString())
                     startActivity(intent)
 
 

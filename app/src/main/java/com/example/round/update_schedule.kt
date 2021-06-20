@@ -22,13 +22,6 @@ class update_schedule : AppCompatActivity() {
         val fix_scheduleID: Int = intent.getStringExtra("fix_SID").toString().toInt()
 
         binding.apply {
-            if (fix_scheduleID == null) Toast.makeText(
-                this@update_schedule,
-                "no fix data",
-                Toast.LENGTH_LONG
-            ).show()
-            else Toast.makeText(this@update_schedule, "yes fix data" + fix_scheduleID, Toast.LENGTH_LONG)
-                .show()
 
             insertBtn.setOnClickListener {
                 val name = sNameEdit.text.toString()
