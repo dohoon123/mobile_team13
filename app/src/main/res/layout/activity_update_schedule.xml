@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="116dp"
         android:text="종료시간"
         android:textColor="@color/pink_deep"
         app:layout_constraintBottom_toBottomOf="@+id/endTime"
@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="124dp"
         android:text="시작시간"
 
         android:textColor="@color/pink_deep"

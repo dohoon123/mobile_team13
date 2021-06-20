@@ -64,7 +64,7 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     }
 
     fun deleteScheduleByR(rid: Int): Boolean {
-        val strsql = "select * from ${rDBHelper.TABLE_NAME} where ${RID}='${rid}';"
+        val strsql = "select * from ${TABLE_NAME} where ${RID}='${rid}';"
 
         val db = writableDatabase
         val cursor = db.rawQuery(strsql, null)

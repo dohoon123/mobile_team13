@@ -21,17 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:textColor="@color/pink_deep"
             android:text="routineName"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/memoContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textColor="@color/pink_deep"
-            android:text="scheduleList"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
