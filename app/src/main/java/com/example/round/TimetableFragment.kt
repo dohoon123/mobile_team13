@@ -18,7 +18,7 @@ import com.example.round.databinding.FragmentTimetableBinding
 class TimetableFragment : Fragment() {
     var binding: FragmentTimetableBinding?=null
     lateinit var layoutManager: LinearLayoutManager
-    lateinit var adapter: TimetableRVA
+    lateinit var adapter: MyAdapter
     lateinit var routineArray:ArrayList<routineData>
     lateinit var scheduleArray:ArrayList<scheduleData>
     lateinit var recyclerView: RecyclerView
@@ -26,7 +26,7 @@ class TimetableFragment : Fragment() {
     lateinit var rDBHelper: rDBHelper
     lateinit var sDBHelper: sDBHelper
 
-    var timetableDataList=ArrayList<timetableData>()
+    var timetableDataList=ArrayList<memoData>()
     //되는지 안되는지 보려고 일단은 임시로 스트링이랑 마이어댑터로 구현..나중에 time이랑 timeData형으로 수정하기
 
     override fun onCreateView(
@@ -74,12 +74,13 @@ class TimetableFragment : Fragment() {
                 //같은 routine에 속하는 schedule을 넣어줘서 string으로 보여줄거임..
                 if(scheduleArray[j].routineID==routineArray[i].routineID){
                     var name=scheduleArray[j].scheduleName.toString()
-                    var start=scheduleArray[j].startTime.toString()
-                    var end=scheduleArray[j].endTime.toString()
-                    tempString+=name+"\n"+start+"~"+end+"\n"
+                    var start=scheduleArray[j].startTime.toString().toInt()
+                    var end=scheduleArray[j].endTime.toString().toInt()
+                    tempString+=name+"\n"+(start/60)+":"+(start%60)+
+                            "~"+(end/60)+":"+(end%60)+"\n"
                 }
             }
-            this.timetableDataList.add(timetableData(routineArray[i].routineID, tempString))
+            this.timetableDataList.add(memoData(routineArray[i].routineID,routineArray[i].routineName, tempString))
             tempString=""
         }
 
@@ -94,7 +95,7 @@ class TimetableFragment : Fragment() {
     fun initRecyclerView() {
         recyclerView=binding!!.recyclerView
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapter = TimetableRVA(timetableDataList)    //파라미터로 시간표 리스트의 배열 전달
+        adapter = MyAdapter(timetableDataList)    //파라미터로 시간표 리스트의 배열 전달
 
 
         //여기서 스와이프 되며삭제되도록 해줘야함
@@ -115,7 +116,7 @@ class TimetableFragment : Fragment() {
 
                 builder.setPositiveButton("삭제", DialogInterface.OnClickListener { dialog, which ->
                     var removeItem=adapter.giveItem(viewHolder.adapterPosition) //지워야할 아이템 객체 리턴받음
-                    var flag=rDBHelper.deleteRoutine(removeItem)
+                    var flag=rDBHelper.deleteRoutine_byMeMo(removeItem)
                     if (flag == false) {
                         Toast.makeText(activity, "삭제 실패", Toast.LENGTH_SHORT).show()
                     } else {
@@ -138,16 +139,16 @@ class TimetableFragment : Fragment() {
 
         binding!!.apply {
             recyclerView.layoutManager = layoutManager
-            adapter.itemClickListener=object:TimetableRVA.OnItemClickListener{
-                override fun OnItemClick(holder: TimetableRVA.ViewHolder, view: View, data: timetableData, position: Int) {
+            adapter.itemClickListener=object:MyAdapter.OnItemClickListener{
+                override fun OnItemClick(holder: MyAdapter.ViewHolder, view: View, data: memoData, position: Int) {
                     //클릭됐을때 생성 및 수정이 가능하도록 이동하기. 이미 존재하는 페이지로 이동하는 이유는 같은routineIdr를 입력하면 수정되도록
                     var intent= Intent(context, Schedule::class.java)
-                    intent.putExtra("RID", data.routineID.toString())
+                    intent.putExtra("RID", data.id)
                     startActivity(intent)
 
 
                     //Toast.makeText(context, "routineID:"+data.routineID.toString()+" 스케줄 추가화면으로 이동함",Toast.LENGTH_SHORT).show()
-                    if(rDBHelper.isDisposable(data.routineID.toString())=="1")
+                    if(rDBHelper.isDisposable(data.id.toString())=="1")
                         Toast.makeText(context,"일회용 시간표입니다.",Toast.LENGTH_SHORT).show()
                     else
                         Toast.makeText(context,"다회용 시간표입니다.",Toast.LENGTH_SHORT).show()

@@ -51,9 +51,10 @@ class fix_schedule : AppCompatActivity() {
             //스케줄 사이즈만큼..
             var id=scheduleArray[i].scheduleID
             var name=scheduleArray[i].scheduleName.toString()
-            var start=scheduleArray[i].startTime.toString()
-            var end=scheduleArray[i].endTime.toString()
-            tempString+="schedlueName:"+name+"\n"+start+"~"+end+"\n"
+            var start=scheduleArray[i].startTime.toString().toInt()
+            var end=scheduleArray[i].endTime.toString().toInt()
+            tempString+=name+"\n"+(start/60)+":"+(start%60)+
+                    "~"+(end/60)+":"+(end%60)+"\n"
 
             this.timetableDataList.add(timetableData(id, tempString))
             tempString=""

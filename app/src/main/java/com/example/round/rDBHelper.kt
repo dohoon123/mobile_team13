@@ -159,6 +159,21 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return flag
     }
 
+    fun deleteRoutine_byMeMo(routine:memoData):Boolean{
+        val strsql="select * from $TABLE_NAME where $RID='${routine.id}';"
+        val db=writableDatabase
+        val cursor=db.rawQuery(strsql,null)
+        val flag=cursor.count!=0
+        if(flag){
+            cursor.moveToFirst()
+            db.delete(TABLE_NAME,"$RID=?", arrayOf(routine.id.toString()))
+        }
+        cursor.close()
+        db.close()
+        return flag
+    }
+
+
     //1회용 시간표인지의 여부 알려주는 함수
     fun isDisposable(routineId:String):String{
         var temp=""
