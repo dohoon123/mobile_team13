@@ -26,11 +26,10 @@ class Routine : AppCompatActivity() {
         binding.apply {
             routineInsertBtn.setOnClickListener {
                 val routineName = routineNameEdit.text.toString()
-                val routineTerm = termEdit.text.toString().toInt()
                 var routine:routineData
 
-                if(isDisposable=="true") {routine = routineData(0, routineName, routineTerm, 0,1)   } //일회용인경우
-                else{  routine = routineData(0, routineName, routineTerm, 0,0) }      //다회용인 경우
+                if(isDisposable=="true") {routine = routineData(0, routineName, 24, 0,1)   } //일회용인경우
+                else{  routine = routineData(0, routineName, 24, 0,0) }      //다회용인 경우
 
 
 

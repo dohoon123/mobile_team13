@@ -265,6 +265,8 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return result
     }
 
+
+
     fun alarmCheckPlus(rid: Int): Boolean {
         val strsql = "select * from $TABLE_NAME where $RID='$rid';"
         val db = writableDatabase

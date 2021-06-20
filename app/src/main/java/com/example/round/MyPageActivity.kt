@@ -44,7 +44,7 @@ class MyPageActivity : AppCompatActivity() {
             recyclerView=binding!!.scoreRecyclerView
             recyclerView.layoutManager= LinearLayoutManager(this@MyPageActivity, LinearLayoutManager.VERTICAL,false)
 
-            adapter= scoreAdapter(this@MyPageActivity, scoreList)
+            adapter= scoreAdapter(scoreList)
             recyclerView.adapter=adapter
 
             //인텐트 초기화
@@ -54,10 +54,10 @@ class MyPageActivity : AppCompatActivity() {
             recyclerView=binding!!.scoreRecyclerView
             recyclerView.layoutManager= LinearLayoutManager(this@MyPageActivity, LinearLayoutManager.VERTICAL,false)
             var dateStr = date.toString()
-            var str:String = dateStr.substring(0,4) + "년 " + dateStr.substring(4,6)+"월 " + dateStr.substring(6,8) + "일"
+            var str:String = dateStr.substring(0,4) + "년 " + dateStr.substring(4,6).toInt()+"월 " + dateStr.substring(6,8).toInt() + "일"
             dateLabel.text = str
 
-            adapter= scoreAdapter(this@MyPageActivity, scoreList)
+            adapter= scoreAdapter(scoreList)
             recyclerView.adapter=adapter
 
             //날짜 누르면 바뀜
@@ -76,7 +76,7 @@ class MyPageActivity : AppCompatActivity() {
                 recyclerView=binding!!.scoreRecyclerView
                 recyclerView.layoutManager= LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL,false)
                 dateLabel.text = "${year}년  ${month+1}월 ${dayOfMonth}일"
-                adapter= scoreAdapter(this@MyPageActivity, scoreList)
+                adapter= scoreAdapter(scoreList)
                 recyclerView.adapter=adapter
 
             }
@@ -89,7 +89,7 @@ class MyPageActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.apply {
             recyclerView = binding!!.scoreRecyclerView
-            adapter = scoreAdapter(this@MyPageActivity,scoreList)
+            adapter = scoreAdapter(scoreList)
             recyclerView.adapter = adapter
         }
 

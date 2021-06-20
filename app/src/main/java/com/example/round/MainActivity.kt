@@ -37,8 +37,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             if(isEnd ==true){//마지막 스케줄인가
+                //routine name 가져옴.
+                var rDBHelper = rDBHelper(this)
+                var routineName = rDBHelper.getrName(rid)
                 //평가 등록
-                scoreDBHelper.insertScore(rid)
+                scoreDBHelper.insertScore(rid, routineName)
             }
 
         }

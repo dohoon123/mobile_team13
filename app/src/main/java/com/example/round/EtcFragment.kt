@@ -22,19 +22,9 @@ class EtcFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding!!.apply {
-            alarm.setOnClickListener {
-                var intent= Intent(context, alarm::class.java)
-                startActivity(intent)
-            }
             myPage.setOnClickListener {
                 val intent = Intent(context, MyPageActivity::class.java)
                 startActivity(intent)
-            }
-            etcmenu3.setOnClickListener {
-
-            }
-            etcmenu4.setOnClickListener {
-
             }
         }
     }

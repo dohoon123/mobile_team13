@@ -10,54 +10,31 @@
         android:id="@+id/routineInsertBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
-        android:layout_marginBottom="189dp"
-        android:text="추가"
+        android:layout_marginBottom="148dp"
         android:backgroundTint="@color/pink_dark"
+        android:text="추가"
         android:textColor="@color/pink_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/termEdit" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:text="루틴 기간\n(시간 단위)"
-        android:textColor="@color/pink_deep"
-        app:layout_constraintBaseline_toBaselineOf="@+id/termEdit"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/termEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:textColor="@color/pink_deep"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/routineNameEdit" />
 
     <EditText
         android:id="@+id/routineNameEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="194dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="232dp"
         android:ems="10"
-        android:textColor="@color/pink_deep"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/termEdit"
+        android:textColor="@color/pink_deep"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="48dp"
         android:text="루틴명"
         android:textColor="@color/pink_deep"
         app:layout_constraintBaseline_toBaselineOf="@+id/routineNameEdit"
@@ -67,10 +44,10 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="55dp"
-        android:textColor="@color/pink_deep"
+        android:layout_marginTop="80dp"
         android:text="루틴 추가창"
+        android:textColor="@color/pink_deep"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

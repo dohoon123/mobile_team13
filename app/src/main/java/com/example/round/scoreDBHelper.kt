@@ -19,13 +19,15 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
         val RID = "routineID"
         val SCORE = "score"
         val EDATE = "endDate"
+        val RNAME = "routineName"
     }
     override fun onCreate(db: SQLiteDatabase?) {
         val create_table = "create table if not exists $TABLE_NAME ("+
                 "$SCID integer primary key autoincrement," +
                 "$RID integer," +
                 "$SCORE float," +
-                "$EDATE long);"
+                "$EDATE long," +
+                "$RNAME string);"
         db!!.execSQL(create_table)
     }
 
@@ -35,7 +37,7 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
         onCreate(db)
     }
 
-    fun insertScore(rid: Int):Boolean{
+    fun insertScore(rid: Int, rName: String):Boolean{
         var rDBHelper = rDBHelper(context)
         val values = ContentValues()
 
@@ -51,6 +53,7 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
         values.put(RID, rid)
         values.put(SCORE, score)
         values.put(EDATE, date)//바꿔야함
+        values.put(RNAME, rName)
         val db = writableDatabase
         val flag = db.insert(TABLE_NAME, null, values)>0
         db.close()
@@ -75,7 +78,8 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
                 var routineid= cursorDriver.getString(1)
                 var score= cursorDriver.getString(2)
                 var date= cursorDriver.getString(3)
-                scoreArray.add(scoreData(scoreId.toInt(), routineid.toInt(), score.toFloat(), date.toLong()))
+                var rName = cursorDriver.getString(4)
+                scoreArray.add(scoreData(scoreId.toInt(), routineid.toInt(), score.toFloat(), date.toLong(), rName))
             }
         }while(cursorDriver.moveToNext())
 

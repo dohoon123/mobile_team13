@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".EtcFragment">
 
@@ -18,61 +18,15 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/alarm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/spinner_theme"
-        android:textColor="@color/pink_deep"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="알람" />
-
-    <TextView
         android:id="@+id/myPage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:layout_weight="1"
         android:background="@drawable/spinner_theme"
-        android:textColor="@color/pink_deep"
         android:gravity="center"
         android:padding="10dp"
-        android:text="마이페이지" />
-
-    <TextView
-        android:id="@+id/etcmenu3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/spinner_theme"
-        android:textColor="@color/pink_deep"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="부가 기능3" />
-
-    <TextView
-        android:id="@+id/etcmenu4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/spinner_theme"
-        android:textColor="@color/pink_deep"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="부가 기능4" />
-
-
+        android:text="마이페이지"
+        android:textColor="@color/pink_deep" />
 </LinearLayout>
