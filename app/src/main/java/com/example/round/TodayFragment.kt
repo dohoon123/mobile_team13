@@ -248,7 +248,7 @@ class TodayFragment : Fragment() {
 
     fun initAlarm(rid: Int?) {
         this.sDBHelper = sDBHelper(requireContext())
-        val sql = "select * from scheduleData where routineID = '$rid';" //꼭 스케줄 리스트 starttime 순으로 정렬 해서 받아오기
+        val sql = "select * from scheduleData where routineID = '$rid' order by startTime;" //꼭 스케줄 리스트 starttime 순으로 정렬 해서 받아오기
         val scheduleArray = sDBHelper.selectAll(sql)
 
         val alarmManager =
@@ -263,6 +263,9 @@ class TodayFragment : Fragment() {
                 val endTimeToCode = scheduleArray[i].endTime//알람마다 코드 다르게
                 intent.putExtra("code", endTimeToCode)
                 intent.putExtra("rid", scheduleArray[i].routineID)//rid에 해당하는 루틴의 점수를 올려야해!
+                if(i == scheduleArray.size-1){//마지막 알람이면 끝임을 알려준다!
+                    intent.putExtra("isEnd", true)
+                }
                 if (endTimeToCode > currentTime) {//현재시간보단 늦어야 해
                     val pendingIntent = PendingIntent.getBroadcast(
                         requireContext(), endTimeToCode, intent,
@@ -278,6 +281,7 @@ class TodayFragment : Fragment() {
                     )
                 }
             }
+
         }
     }
 

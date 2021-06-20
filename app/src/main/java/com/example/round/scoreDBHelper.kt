@@ -35,12 +35,12 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
         onCreate(db)
     }
 
-    fun insertScore(scData:scoreData):Boolean{
+    fun insertScore(rid: Int):Boolean{
         var rDBHelper = rDBHelper(context)
         val values = ContentValues()
 
         //스코어 계산
-        var score =rDBHelper.calculateScore(scData.routineID)
+        var score =rDBHelper.calculateScore(rid)
         if (score == -1f)
             return false
 
@@ -48,7 +48,7 @@ class scoreDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, n
         var date:Long = LocalDate.now().toString().replace("-","").toLong()
 
         //SCID값은 자동 증가
-        values.put(RID, scData.routineID)
+        values.put(RID, rid)
         values.put(SCORE, score)
         values.put(EDATE, date)//바꿔야함
         val db = writableDatabase

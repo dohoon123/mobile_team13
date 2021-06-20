@@ -27,15 +27,16 @@ class MyPageActivity : AppCompatActivity() {
 
     fun init(){
         scoreDBHelper = scoreDBHelper(this)
-        var data = scoreData(0, 1, 0f, 0)
 
-        //score DB 임의로 넣어주는 부분. 나중에 삭제 필요.
-        var flag = scoreDBHelper.insertScore(data)
-        if (flag){
-            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
-        }
+//        var data = scoreData(0, 1, 0f, 0)
+//
+//        //score DB 임의로 넣어주는 부분. 나중에 삭제 필요.
+//        var flag = scoreDBHelper.insertScore(data)
+//        if (flag){
+//            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
+//        }else{
+//            Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
+//        }
 
 
         binding.apply {
@@ -72,9 +73,6 @@ class MyPageActivity : AppCompatActivity() {
 
                 var date = str.toLong()
                 scoreList = scoreDBHelper?.selectScByDate(date)//캘린더에서 날짜 가져옴.
-//                if (scoreList != null){
-//                    Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show()
-//                }
                 recyclerView=binding!!.scoreRecyclerView
                 recyclerView.layoutManager= LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL,false)
                 dateLabel.text = "${year}년  ${month+1}월 ${dayOfMonth}일"

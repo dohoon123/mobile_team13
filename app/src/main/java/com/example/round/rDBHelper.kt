@@ -4,9 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
-    companion object{
+    companion object {
         val DB_NAME = "myRoutineDB.db"
         val DB_VERSION = 1
         val TABLE_NAME = "routineData"
@@ -14,21 +15,22 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         val RNAME = "routineName"
         val RTERM = "routineTerm"
         val ALARM = "alarmChecked"
-        val checkDisposable="disposable"
+        val checkDisposable = "disposable"
     }
+
     override fun onCreate(db: SQLiteDatabase?) {
-        val create_table = "create table if not exists $TABLE_NAME ("+
-                "$RID integer primary key autoincrement,"+
+        val create_table = "create table if not exists $TABLE_NAME (" +
+                "$RID integer primary key autoincrement," +
                 "$RNAME string," +
                 "$RTERM integer," +
-                "$ALARM integer,"+
+                "$ALARM integer," +
                 "$checkDisposable integer);"
         db!!.execSQL(create_table)
     }
 
-    fun reset(){
-        var db=writableDatabase
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME+";");
+    fun reset() {
+        var db = writableDatabase
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -37,41 +39,41 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         onCreate(db)
     }
 
-    fun insertRoutine(routine:routineData):Boolean{
+    fun insertRoutine(routine: routineData): Boolean {
         val values = ContentValues()
         //RID값은 자동 증가
         values.put(RNAME, routine.routineName)
         values.put(RTERM, routine.routineTerm)//기간 24시간 고정.
         values.put(ALARM, routine.alarmChecked)
         val db = writableDatabase
-        val flag = db.insert(TABLE_NAME, null, values)>0
+        val flag = db.insert(TABLE_NAME, null, values) > 0
         db.close()
         return flag
     }
 
 
     //데이터 구조가 바껴서 일회용 시간표와 다회용 시간표를 구분해서 인서트해주는 함수
-    fun insertRoutine_disposable(routine:routineData):Boolean{
+    fun insertRoutine_disposable(routine: routineData): Boolean {
         val values = ContentValues()
         //RID값은 자동 증가
         values.put(RNAME, routine.routineName)
         values.put(RTERM, routine.routineTerm)//기간 24시간 고정.
         values.put(ALARM, routine.alarmChecked)
-        values.put(checkDisposable,routine.disposable)
+        values.put(checkDisposable, routine.disposable)
         val db = writableDatabase
-        val flag = db.insert(TABLE_NAME, null, values)>0
+        val flag = db.insert(TABLE_NAME, null, values) > 0
         db.close()
         return flag
     }
 
 
-    fun getLatestrID() : Int{
-        val strsql="select * from $TABLE_NAME;"//전부 가져와서 가장 최근 루틴ID 반납
+    fun getLatestrID(): Int {
+        val strsql = "select * from $TABLE_NAME;"//전부 가져와서 가장 최근 루틴ID 반납
         val db = readableDatabase
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToLast()//마지막으로 이동
 
-        if(cursorDriver.columnCount != 0) {
+        if (cursorDriver.columnCount != 0) {
             return cursorDriver.getInt(0)
         } else {
             return cursorDriver.getInt(0)
@@ -79,14 +81,14 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     }
 
     //루틴의 이름을 받아서 루틴 아이디를 반환해주는 함수. 일치하는 루틴 없으면 -1 반환
-    fun getrId(rname: String) : Int {
-        val strsql= "select * from $TABLE_NAME where $RNAME = '${rname}';"
+    fun getrId(rname: String): Int {
+        val strsql = "select * from $TABLE_NAME where $RNAME = '${rname}';"
         val db = readableDatabase
-        var rId:Int = 0
+        var rId: Int = 0
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToFirst()
         //Name도 후보키로 중복된 데이터가 없어야할것같아요
-        if(cursorDriver.count==1) {
+        if (cursorDriver.count == 1) {
             rId = cursorDriver.getInt(0)
         } else {
             rId = -1
@@ -97,13 +99,13 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     }
 
     //루틴의 ID받아서 Rid와 일치하는 튜플의 rname 반환
-    fun getrName(rid: Int) : String {
-        val strsql="select * from $TABLE_NAME where $RID = ${rid};"
+    fun getrName(rid: Int): String {
+        val strsql = "select * from $TABLE_NAME where $RID = ${rid};"
         val db = readableDatabase
         var rname: String
         var cursorDriver = db.rawQuery(strsql, null)
         cursorDriver.moveToFirst()
-        if(cursorDriver.count==1) {
+        if (cursorDriver.count == 1) {
             rname = cursorDriver.getString(1)
         } else {
             rname = ""
@@ -113,31 +115,40 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return rname
     }
 
-    fun selectAll():ArrayList<routineData>{
+    fun selectAll(): ArrayList<routineData> {
         //routine데이터 전부 다 가져올거임 Array로 리턴
-        val strsql="select * from $TABLE_NAME;"
-        val db= readableDatabase
+        val strsql = "select * from $TABLE_NAME;"
+        val db = readableDatabase
         var dataArray = ArrayList<String>()//속성
         var routineArray = ArrayList<routineData>()//전체 데이터
-        var cursorDriver=db.rawQuery(strsql,null)
+        var cursorDriver = db.rawQuery(strsql, null)
 
         cursorDriver.moveToFirst()
-        val attrcount=cursorDriver.columnCount
+        val attrcount = cursorDriver.columnCount
 
-        var tempString=""
+        var tempString = ""
 
-        do{
-            if(cursorDriver.count==0){return routineArray}
-            else{
-                tempString=""
-                var routineid= cursorDriver.getString(0)
-                var routineName= cursorDriver.getString(1)
-                var routineTerm= cursorDriver.getString(2)
+        do {
+            if (cursorDriver.count == 0) {
+                return routineArray
+            } else {
+                tempString = ""
+                var routineid = cursorDriver.getString(0)
+                var routineName = cursorDriver.getString(1)
+                var routineTerm = cursorDriver.getString(2)
                 var alarmChecked = cursorDriver.getString(3).toInt()
-                var disposal=cursorDriver.getString(4).toString().toInt()
-                routineArray.add(routineData(routineid.toInt(), routineName, routineTerm.toInt(),alarmChecked,disposal))
+                var disposal = cursorDriver.getString(4).toString().toInt()
+                routineArray.add(
+                    routineData(
+                        routineid.toInt(),
+                        routineName,
+                        routineTerm.toInt(),
+                        alarmChecked,
+                        disposal
+                    )
+                )
             }
-        }while(cursorDriver.moveToNext())
+        } while (cursorDriver.moveToNext())
 
         cursorDriver.close()
         db.close()
@@ -145,14 +156,14 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     }
 
 
-    fun deleteRoutine(routine:timetableData):Boolean{
-        val strsql="select * from $TABLE_NAME where $RID='${routine.routineID}';"
-        val db=writableDatabase
-        val cursor=db.rawQuery(strsql,null)
-        val flag=cursor.count!=0
-        if(flag){
+    fun deleteRoutine(routine: timetableData): Boolean {
+        val strsql = "select * from $TABLE_NAME where $RID='${routine.routineID}';"
+        val db = writableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count != 0
+        if (flag) {
             cursor.moveToFirst()
-            db.delete(TABLE_NAME,"$RID=?", arrayOf(routine.routineID.toString()))
+            db.delete(TABLE_NAME, "$RID=?", arrayOf(routine.routineID.toString()))
         }
         cursor.close()
         db.close()
@@ -175,16 +186,16 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
 
     //1회용 시간표인지의 여부 알려주는 함수
-    fun isDisposable(routineId:String):String{
-        var temp=""
-        val strsql="select * from $TABLE_NAME where $RID='$routineId';"
-        val db=readableDatabase
-        val cursor=db.rawQuery(strsql,null)
-        val flag=cursor.count!=0
+    fun isDisposable(routineId: String): String {
+        var temp = ""
+        val strsql = "select * from $TABLE_NAME where $RID='$routineId';"
+        val db = readableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count != 0
 
-        if(flag){
+        if (flag) {
             cursor.moveToFirst()
-            temp=cursor.getString(4).toString()
+            temp = cursor.getString(4).toString()
         }
         cursor.close()
         db.close()
@@ -192,20 +203,20 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return temp
     }
 
-    fun returnDataInfo(routineId: String):String{
-        var temp=""
-        val strsql="select * from $TABLE_NAME where $RID='${routineId}';"
-        val db=readableDatabase
-        val cursor=db.rawQuery(strsql,null)
-        val flag=cursor.count!=0
+    fun returnDataInfo(routineId: String): String {
+        var temp = ""
+        val strsql = "select * from $TABLE_NAME where $RID='${routineId}';"
+        val db = readableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count != 0
 
-        if(flag){
+        if (flag) {
             cursor.moveToFirst()
-            temp+=cursor.getString(0)
-            temp+=cursor.getString(1)
-            temp+=cursor.getString(2)
-            temp+=cursor.getString(3)
-            temp+=cursor.getString(4)
+            temp += cursor.getString(0)
+            temp += cursor.getString(1)
+            temp += cursor.getString(2)
+            temp += cursor.getString(3)
+            temp += cursor.getString(4)
         }
         cursor.close()
         db.close()
@@ -213,43 +224,61 @@ class rDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return temp
     }
 
-    fun calculateScore(routineId: Int): Float{
-        var result:Float
+    fun calculateScore(routineId: Int): Float {//점수 계산 및 루틴 수정, 삭제
+        var result: Float
         var sDBHelper = sDBHelper(context)
 
         var schedules: ArrayList<scheduleData> = sDBHelper.selectAllSbyR(routineId)
 
         //한 루틴에 대해 전체 스케줄 갯수
         var totalNum: Float = schedules.size.toFloat()
-        if (totalNum <= 0)
+        if (totalNum <= 0) {
             return -1f
-
-        val strsql = """select $ALARM from $TABLE_NAME where $RID = $routineId"""
-        val db= readableDatabase
-        var cursorDriver=db.rawQuery(strsql,null)
-        cursorDriver.moveToFirst()
-        if (cursorDriver.columnCount <= 0)
-            return -1f
-        else{
-            var sum = cursorDriver.getString(0).toFloat()
-            result = sum*5 / totalNum
         }
+        var strsql = """select $ALARM, $checkDisposable from $TABLE_NAME where $RID = $routineId;"""
+        val db = readableDatabase
+        var cursorDriver = db.rawQuery(strsql, null)
+        var disposable = 0
+        cursorDriver.moveToFirst()
+        if (cursorDriver.columnCount <= 0) { //아무것도 없으면 에러 처리
+            cursorDriver.close()
+            db.close()
+            return -1f
+        } else {
+            var sum = cursorDriver.getString(0).toFloat()
+            disposable = cursorDriver.getString(1).toInt()
+            result = sum * 5 / totalNum
+        }
+
+        if (disposable == 1) { //일회용 루틴이면 삭제
+            db.execSQL("delete from $TABLE_NAME where $RID = '$routineId';")
+            sDBHelper(context).deleteScheduleByR(routineId)
+        } else { //다회용 루틴이면 alarmcheacked값 0으로 초기화
+            var contentValues = ContentValues()
+            contentValues.put(ALARM, 0)
+            db.update(TABLE_NAME, contentValues, "routineID = ?", arrayOf(routineId.toString()))
+            db.execSQL("update $TABLE_NAME set $ALARM = 0 where $RID = '$routineId';")
+        }
+        cursorDriver.close()
+        db.close()
+
         return result
     }
 
-    fun alarmCheckPlus(rid:Int){
-        val strsql="select * from $TABLE_NAME where $RID='$rid';"
-        val db= writableDatabase
+    fun alarmCheckPlus(rid: Int): Boolean {
+        val strsql = "select * from $TABLE_NAME where $RID='$rid';"
+        val db = writableDatabase
         val cursor = db.rawQuery(strsql, null)
-        val flag = cursor.count!=0
+        val flag = cursor.count != 0
 
-        if (flag){
+        if (flag) {
             cursor.moveToFirst()
             val score = cursor.getInt(3) + 1
             val values = ContentValues()
             values.put(ALARM, score)
             db.update(TABLE_NAME, values, "$RID=?", arrayOf(rid.toString()))
+            return true
         }
+        return false
     }
-
 }

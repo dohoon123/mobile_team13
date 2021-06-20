@@ -49,6 +49,34 @@ class sDBHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return flag
     }
 
+    fun deleteSchedule(sid: Int): Boolean {
+        val strsql = "select * from ${TABLE_NAME} where ${SID}='${sid}';"
+
+        val db = writableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count != 0
+        if (flag) {
+            db.execSQL("delete from ${TABLE_NAME} where ${SID} = '$sid';")
+        }
+        cursor.close()
+        db.close()
+        return flag
+    }
+
+    fun deleteScheduleByR(rid: Int): Boolean {
+        val strsql = "select * from ${rDBHelper.TABLE_NAME} where ${RID}='${rid}';"
+
+        val db = writableDatabase
+        val cursor = db.rawQuery(strsql, null)
+        val flag = cursor.count != 0
+        if (flag) {
+            db.execSQL("delete from ${TABLE_NAME} where ${RID} = '$rid';")
+        }
+        cursor.close()
+        db.close()
+        return flag
+    }
+
     //selectAll처럼 스케줄데이터 리스트 가져오는 건데, sql을 직접 입력해서 검색 결과에 맞는 리스트만 줌
     fun selectAll(sql: String):ArrayList<scheduleData> {
         val db = readableDatabase

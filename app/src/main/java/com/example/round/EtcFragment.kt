@@ -42,5 +42,4 @@ class EtcFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
-
 }
