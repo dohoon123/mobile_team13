@@ -46,7 +46,7 @@ class TimetableRVA(val items:ArrayList<timetableData>) :RecyclerView.Adapter<Tim
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply{
-            memoTitle.text="routineID: "+items[position].routineID.toString()
+            memoTitle.text="ID: "+items[position].routineID.toString()
             memoContent.text=items[position].data.toString()
         }
     }

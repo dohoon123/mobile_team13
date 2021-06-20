@@ -22,14 +22,6 @@ class update_schedule : AppCompatActivity() {
         val fix_scheduleID: Int = intent.getStringExtra("fix_SID").toString().toInt()
 
         binding.apply {
-            if (fix_scheduleID == null) Toast.makeText(
-                this@update_schedule,
-                "no fix data",
-                Toast.LENGTH_LONG
-            ).show()
-//            else Toast.makeText(this@update_schedule, "yes fix data" + fix_scheduleID, Toast.LENGTH_LONG)
-//                .show()
-
             insertBtn.setOnClickListener {
                 val name = sNameEdit.text.toString()
                 val start = startTime.hour * 60 + startTime.minute
@@ -37,9 +29,9 @@ class update_schedule : AppCompatActivity() {
                 val schedule = scheduleData(fix_routineID, fix_scheduleID, name, start, end)
 
                 val result = DBHelper.updateSchedule(schedule)
-                if (result){
+                if (result) {
                     Toast.makeText(this@update_schedule, "수정완료", Toast.LENGTH_SHORT).show()
-                }else{
+                } else {
                     Toast.makeText(this@update_schedule, "Failed", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -47,9 +39,9 @@ class update_schedule : AppCompatActivity() {
             deleteBtn.setOnClickListener {
                 Toast.makeText(this@update_schedule, "Deleted", Toast.LENGTH_SHORT).show()
                 val flag = DBHelper.deleteSchedule(fix_routineID)
-                if (flag){
+                if (flag) {
                     Toast.makeText(this@update_schedule, "Deleted", Toast.LENGTH_SHORT).show()
-                }else{
+                } else {
                     Toast.makeText(this@update_schedule, "Failed", Toast.LENGTH_SHORT).show()
                 }
 

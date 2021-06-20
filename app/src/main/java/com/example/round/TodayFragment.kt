@@ -271,7 +271,7 @@ class TodayFragment : Fragment() {
                         requireContext(), endTimeToCode, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                     )
-                    Toast.makeText(requireContext(), "알람 등록!", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(requireContext(), "알람 등록!", Toast.LENGTH_SHORT).show()
                     val triggerTime = (SystemClock.elapsedRealtime()
                             + (endTimeToCode - currentTime) * 60000)//초 * 1000 -> 60000 == (1분) 여기 분단위임
                     alarmManager.set(
